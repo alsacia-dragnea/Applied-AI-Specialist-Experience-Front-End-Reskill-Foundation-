@@ -1,0 +1,100 @@
+1
+00:00:00,000 --> 00:00:06,500
+This is Chapter & Co. — a fully responsive
+eCommerce bookstore built for the IBM AI Specialist Capstone.
+
+2
+00:00:06,500 --> 00:00:13,000
+The application was designed and implemented from scratch
+using IBM Bob as the Agentic IDE.
+
+3
+00:00:13,000 --> 00:00:20,000
+Stack: Next.js 15 · React · TypeScript · PostgreSQL · Tailwind CSS
+
+4
+00:00:20,000 --> 00:00:27,000
+Everything began with a single master prompt inside IBM Bob.
+
+5
+00:00:27,000 --> 00:00:34,500
+Bob proposed the architecture, data model
+and a seven-phase incremental delivery plan.
+
+6
+00:00:34,500 --> 00:00:42,000
+Bob generated: Prisma schema · Auth.js authentication
+Zustand cart store · REST API handlers
+
+7
+00:00:42,000 --> 00:00:55,000
+Server-side checkout enforces authoritative pricing —
+the server always recalculates from the database,
+ignoring any client-submitted values.
+
+8
+00:00:55,000 --> 01:03,500
+The homepage renders as a React Server Component:
+hero banner · featured books · categories · bestsellers
+
+9
+01:03,500 --> 00:01:13,000
+Catalogue: full-text search · category filtering
+· price range · five sort modes — all server-side.
+
+10
+00:01:13,000 --> 00:01:24,000
+Book detail: cover · author · categories
+· delivery estimate · related books · Add to Cart
+
+11
+00:01:24,000 --> 00:01:35,000
+Cart persists in localStorage via Zustand —
+survives page refreshes without requiring login.
+
+12
+00:01:35,000 --> 00:01:44,000
+Checkout: delivery address selection · demo payment
+(clearly labelled — no real card data stored)
+
+13
+00:01:44,000 --> 00:01:51,500
+Gift points: 500 welcome points seeded for demo account
+100 points = £1 discount
+
+14
+00:01:51,500 --> 00:02:05,000
+Order placement uses a Prisma transaction:
+confirm pricing · deduct stock · record payment · award points
+
+15
+00:02:05,000 --> 00:02:13,000
+30 unit tests · all passing
+Vitest: cart store · utilities · Zod validation schemas
+
+16
+00:02:13,000 --> 00:02:22,000
+48-hour cancellation window enforced server-side
+Stock restored · gift points refunded on cancel
+
+17
+00:02:22,000 --> 00:02:35,000
+Developer review: fixed 4 TypeScript strict-mode errors
+· corrected Prisma query typing
+· updated Next.js v15 config API
+
+18
+00:02:35,000 --> 00:02:44,000
+Git branch: feature/chapter-and-co-bookstore
+Prisma migrations · OpenAPI spec · architecture docs
+
+19
+00:02:44,000 --> 00:02:54,000
+IBM Bob accelerated: architecture · schema · components
+· API handlers · tests — all from structured prompts,
+reviewed and refined by the developer.
+
+20
+00:02:54,000 --> 00:03:00,000
+The result: a production-ready bookstore demonstrating
+Agentic AI development in practice.

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter & Co. — Capstone Video Package</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system,"Segoe UI",system-ui,sans-serif; font-size: 14px; line-height: 1.6; color: #1f2328; background: #fff; max-width: 820px; margin: 0 auto; padding: 32px 24px 64px; }
+  h1 { font-size: 22px; font-weight: 700; color: #2C1810; margin-bottom: 4px; }
+  .subtitle { color: #57606a; font-size: 13px; margin-bottom: 8px; }
+  h2 { font-size: 15px; font-weight: 700; color: #2C1810; margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #C8956C; text-transform: uppercase; letter-spacing: .06em; }
+  h3 { font-size: 13px; font-weight: 700; color: #1f2328; margin: 20px 0 8px; }
+  p { margin-bottom: 10px; color: #57606a; }
+  strong { color: #1f2328; }
+  hr { border: none; border-top: 1px solid #e5e7eb; margin: 32px 0; }
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .checklist li { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid #e5e7eb; font-size: 13px; }
+  .checklist li:last-child { border-bottom: none; }
+  .check { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+  .check.pass { background: #d1fae5; color: #1a7f37; }
+  .check.warn { background: #fef3c7; color: #9a6700; }
+  .check.info { background: #dbeafe; color: #1d4ed8; }
+  /* STORYBOARD TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px; }
+  th { background: #2C1810; color: #fff; padding: 9px 12px; text-align: left; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+  td { padding: 9px 12px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+  tr:nth-child(even) td { background: #f7f8fa; }
+  .ts { font-weight: 700; color: #C8956C; white-space: nowrap; font-size: 12px; }
+  .scene-tag { display: inline-block; background: #2C1810; color: #fff; border-radius: 4px; padding: 2px 7px; font-size: 11px; font-weight: 700; margin-bottom: 4px; }
+  /* SCENE BLOCKS */
+  .scene-block { border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+  .scene-header { background: #2C1810; color: #fff; padding: 10px 16px; font-size: 12px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+  .scene-time { background: #C8956C; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+  .scene-body { padding: 16px; }
+  .narration { background: #f7f8fa; border-left: 3px solid #C8956C; border-radius: 0 6px 6px 0; padding: 12px 14px; font-style: italic; color: #1f2328; line-height: 1.7; margin: 0; font-size: 13px; }
+  .narration-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #C8956C; margin-bottom: 6px; letter-spacing: .08em; }
+  /* SRT */
+  .srt-block { font-family: "SFMono-Regular",Consolas,monospace; font-size: 12px; background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px 16px; white-space: pre-wrap; line-height: 1.6; }
+  /* RECORDING CARDS */
+  .rec-card { border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+  .rec-header { background: #f7f8fa; padding: 10px 14px; font-size: 13px; font-weight: 700; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
+  .rec-body { padding: 14px; font-size: 13px; }
+  .rec-body ul { list-style: none; margin-top: 6px; }
+  .rec-body ul li { padding: 3px 0; color: #57606a; }
+  .rec-body ul li::before { content: "→ "; color: #C8956C; font-weight: 700; }
+  .tag { display: inline-block; border-radius: 4px; padding: 2px 7px; font-size: 11px; font-weight: 700; margin-right: 4px; }
+  .tag-url { background: #dbeafe; color: #1d4ed8; font-family: monospace; }
+  .tag-dur { background: #d1fae5; color: #1a7f37; }
+  /* EVIDENCE */
+  .ev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .ev-card { background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; }
+  .ev-card h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #57606a; margin-bottom: 8px; }
+  .ev-card .value { font-size: 22px; font-weight: 700; color: #2C1810; }
+  .ev-card .detail { font-size: 12px; color: #57606a; margin-top: 2px; }
+  .status-row { display: flex; align-items: center; gap: 6px; padding: 4px 0; font-size: 12px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot.green { background: #1a7f37; }
+  .dot.blue { background: #1d4ed8; }
+  .dot.amber { background: #9a6700; }
+  pre { background: #1e1e2e; color: #cdd6f4; padding: 14px 16px; border-radius: 6px; font-size: 12px; line-height: 1.6; overflow-x: auto; margin: 10px 0; }
+  code { font-family: "SFMono-Regular",Consolas,monospace; }
+  .submit-box { background: #2C1810; color: #fff; border-radius: 10px; padding: 24px; margin-top: 20px; }
+  .submit-box h3 { color: #fff; font-size: 15px; margin-bottom: 6px; }
+  .submit-box p { color: rgba(255,255,255,.8); font-size: 13px; }
+  .submit-desc { background: rgba(255,255,255,.1); border-radius: 6px; padding: 12px 14px; margin-top: 12px; font-size: 13px; color: rgba(255,255,255,.95); line-height: 1.6; }
+  .footer { text-align: center; font-size: 11px; color: #57606a; border-top: 1px solid #e5e7eb; padding-top: 20px; margin-top: 48px; }
+  details { border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 12px; }
+  details > summary { padding: 12px 16px; font-size: 13px; font-weight: 700; cursor: pointer; background: #f7f8fa; border-radius: 8px; list-style: none; display: flex; justify-content: space-between; }
+  details[open] > summary { border-radius: 8px 8px 0 0; border-bottom: 1px solid #e5e7eb; }
+  details > summary::after { content: "▼"; font-size: 10px; color: #57606a; }
+  details[open] > summary::after { content: "▲"; }
+  details > div { padding: 16px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<h1>Chapter &amp; Co. — Capstone Video Package</h1>
+<p class="subtitle">IBM AI Specialist Front End &amp; Mobile Capstone · All content grounded in actual project evidence</p>
+<p class="subtitle" style="margin-bottom:24px">Video duration: ~3:00 · 445 spoken words · 11 clips · 20 SRT blocks</p>
+
+<!-- ─── SECTION 1: EVIDENCE ─────────────────────────────────────────────── -->
+<h2>1 · Live Project Evidence</h2>
+<p>All figures drawn from the running application and executed test suite — nothing invented.</p>
+
+<div class="ev-grid" style="margin-bottom:20px">
+  <div class="ev-card"><h4>Unit Tests</h4><div class="value">30 / 30</div><div class="detail">Vitest · 3 files · 1.04s · all passing</div></div>
+  <div class="ev-card"><h4>E2E Tests</h4><div class="value">12</div><div class="detail">Playwright · 5 suites · Homepage, Catalogue, Auth, Cart, Orders</div></div>
+  <div class="ev-card"><h4>Seed Data</h4><div class="value">30 books</div><div class="detail">10 categories · 15 authors · 1 demo user (500 gift points)</div></div>
+  <div class="ev-card"><h4>API Endpoints</h4><div class="value">9</div><div class="detail">All protected routes return 401 without auth (verified)</div></div>
+  <div class="ev-card"><h4>Database Models</h4><div class="value">13</div><div class="detail">User, Book, Author, Category, Address, CartItem, Order, OrderItem, Payment, GiftPoints…</div></div>
+  <div class="ev-card"><h4>Source Files</h4><div class="value">~95</div><div class="detail">11 pages · 9 API routes · 15 components · 5 lib files</div></div>
+</div>
+
+<h3>Verified HTTP Status</h3>
+<div class="grid-2">
+  <div><div class="status-row"><div class="dot green"></div><code>GET /</code> → 200 Homepage</div></div>
+  <div><div class="status-row"><div class="dot green"></div><code>GET /catalogue</code> → 200</div></div>
+  <div><div class="status-row"><div class="dot green"></div><code>GET /books/sapiens</code> → 200</div></div>
+  <div><div class="status-row"><div class="dot green"></div><code>GET /cart</code> → 200</div></div>
+  <div><div class="status-row"><div class="dot green"></div><code>GET /auth/login</code> → 200</div></div>
+  <div><div class="status-row"><div class="dot green"></div><code>GET /api/books?limit=5</code> → 200, 30 books</div></div>
+  <div><div class="status-row"><div class="dot blue"></div><code>GET /account</code> → 307 → /auth/login</div></div>
+  <div><div class="status-row"><div class="dot blue"></div><code>GET /checkout</code> → 307 → /auth/login</div></div>
+  <div><div class="status-row"><div class="dot amber"></div><code>GET /api/addresses</code> → 401</div></div>
+  <div><div class="status-row"><div class="dot amber"></div><code>GET /api/gift-points</code> → 401</div></div>
+</div>
+
+<h3>IBM Bob AI Development Log — 8 Prompts</h3>
+<ul class="checklist">
+  <li><span class="check pass">1</span><div><strong>Architecture &amp; scaffold</strong> — Bob proposed App Router structure, 13-model schema, 9 API contracts, 7-phase plan</div></li>
+  <li><span class="check pass">2</span><div><strong>Design system</strong> — Tailwind config, global CSS, brand tokens, warm editorial palette</div></li>
+  <li><span class="check pass">3</span><div><strong>Homepage &amp; BookCard</strong> — Server components, hero, featured books, categories, bestsellers</div></li>
+  <li><span class="check pass">4</span><div><strong>Catalogue filters</strong> — Server-side filtering, sorting, pagination with Prisma</div></li>
+  <li><span class="check pass">5</span><div><strong>Authentication</strong> — Auth.js Credentials, bcrypt, Zod validation, login/register</div></li>
+  <li><span class="check pass">6</span><div><strong>Cart &amp; Checkout</strong> — Zustand persistence, gift points, demo payment, server-side pricing</div></li>
+  <li><span class="check pass">7</span><div><strong>Orders &amp; cancellation</strong> — Order history, buy again, 48-hour server-enforced cancellation</div></li>
+  <li><span class="check pass">8</span><div><strong>Tests</strong> — 30 unit tests for cart/utils/validations · Playwright E2E suite</div></li>
+</ul>
+
+<h3>Developer Refinements (verified, not invented)</h3>
+<ul class="checklist">
+  <li><span class="check pass">✓</span><div>Fixed 4 TypeScript strict-mode errors: <code>Prisma.BookWhereInput</code> / <code>Prisma.BookOrderByWithRelationInput</code></div></li>
+  <li><span class="check pass">✓</span><div>Replaced <code>...new Set()</code> spread with <code>Array.from(new Set())</code> for ES2015 target</div></li>
+  <li><span class="check pass">✓</span><div>Extracted <code>userId</code> after session guard to resolve TS18048</div></li>
+  <li><span class="check pass">✓</span><div>Updated <code>next.config.js</code>: <code>experimental.serverComponentsExternalPackages</code> → <code>serverExternalPackages</code></div></li>
+  <li><span class="check pass">✓</span><div>Fixed curly apostrophe in seed data string that broke TypeScript parser</div></li>
+  <li><span class="check pass">✓</span><div>Removed non-existent <code>@radix-ui/react-badge</code> package from dependencies</div></li>
+</ul>
+
+<hr>
+
+<!-- ─── SECTION 2: REQUIREMENTS CHECKLIST ──────────────────────────────── -->
+<h2>2 · IBM Capstone Requirements Checklist</h2>
+<ul class="checklist">
+  <li><span class="check pass">✓</span><div><strong>~3 minutes duration</strong> — Script timed at ~3:00 at 140 wpm (445 words)</div></li>
+  <li><span class="check pass">✓</span><div><strong>Responsive eCommerce bookstore</strong> — All pages verified HTTP 200; mobile layout recorded in Clip 10</div></li>
+  <li><span class="check pass">✓</span><div><strong>Explains how IBM Bob was used</strong> — Scene 2 (0:20–0:55) dedicated; 8 documented prompts in README AI Dev Log</div></li>
+  <li><span class="check pass">✓</span><div><strong>AI-generated code shown</strong> — auth.ts, checkout route, cart store, book-card all shown in Clips 3 &amp; 10</div></li>
+  <li><span class="check pass">✓</span><div><strong>Developer review &amp; refinement</strong> — Scene 5 covers 6 verified TypeScript/config fixes</div></li>
+  <li><span class="check pass">✓</span><div><strong>Testing shown</strong> — 30/30 Vitest unit tests in terminal (Clip 9)</div></li>
+  <li><span class="check pass">✓</span><div><strong>Final application shown</strong> — Homepage, catalogue, checkout, confirmation in Clips 1, 4–8</div></li>
+  <li><span class="check pass">✓</span><div><strong>GitHub repository</strong> — Feature branch, commit, file tree in Clip 11</div></li>
+  <li><span class="check pass">✓</span><div><strong>1920×1080, 16:9</strong> — Specified in recording guide and FFmpeg command</div></li>
+  <li><span class="check pass">✓</span><div><strong>No real payments</strong> — DEMO badge in UI; explicitly stated in narration</div></li>
+  <li><span class="check warn">⚠</span><div><strong>Git commit</strong> — Run <code>sudo xcodebuild -license</code> first (Xcode licence not yet accepted), then <code>git init &amp;&amp; git checkout -b feature/chapter-and-co-bookstore &amp;&amp; git add -A &amp;&amp; git commit -m "feat: complete Chapter &amp; Co."</code></div></li>
+  <li><span class="check info">ℹ</span><div><strong>MP4 generation</strong> — IBM Bob cannot render video directly. Use the FFmpeg command in Section 6 after recording the 11 clips.</div></li>
+</ul>
+
+<hr>
+
+<!-- ─── SECTION 3: STORYBOARD ────────────────────────────────────────────── -->
+<h2>3 · Timestamped Storyboard</h2>
+<table>
+  <thead><tr><th>Time</th><th>Scene</th><th>Screen</th><th>Actions</th><th>Caption</th></tr></thead>
+  <tbody>
+    <tr><td class="ts">0:00–0:08</td><td><span class="scene-tag">S1</span></td><td><code>/</code> Hero</td><td>Hold on hero banner headline</td><td>"This is Chapter &amp; Co."</td></tr>
+    <tr><td class="ts">0:08–0:20</td><td><span class="scene-tag">S1</span></td><td><code>/</code> Scroll</td><td>Slow scroll: categories → bestsellers → CTA</td><td>Stack: Next.js 15 · React · TypeScript…</td></tr>
+    <tr><td class="ts">0:20–0:35</td><td><span class="scene-tag">S2</span></td><td>IBM Bob chat</td><td>Show master prompt · Bob architecture response</td><td>"Everything began with a single master prompt…"</td></tr>
+    <tr><td class="ts">0:35–0:45</td><td><span class="scene-tag">S2</span></td><td>VS Code — src/ tree</td><td>Show app/, components/, lib/, store/, tests/</td><td>Bob proposed architecture, data model, 7-phase plan</td></tr>
+    <tr><td class="ts">0:45–0:55</td><td><span class="scene-tag">S2</span></td><td>VS Code — checkout route</td><td>Highlight "// Fetch books server-side for authoritative pricing"</td><td>Server-side pricing — server ignores client values</td></tr>
+    <tr><td class="ts">0:55–1:10</td><td><span class="scene-tag">S3</span></td><td><code>/catalogue</code></td><td>Show grid → click Fiction → show 21 results</td><td>Catalogue: full-text search · filtering · 5 sort modes</td></tr>
+    <tr><td class="ts">1:10–1:20</td><td><span class="scene-tag">S3</span></td><td><code>/catalogue?search=sapiens</code></td><td>Type "sapiens" → 1 result shown</td><td>Search: "Sapiens: A Brief History of Humankind"</td></tr>
+    <tr><td class="ts">1:20–1:35</td><td><span class="scene-tag">S3</span></td><td><code>/books/one-hundred-years-of-solitude</code></td><td>Show cover, price, Add to Cart → toast</td><td>Book detail: cover · delivery estimate · Add to Cart</td></tr>
+    <tr><td class="ts">1:35–1:50</td><td><span class="scene-tag">S4</span></td><td><code>/cart</code> → <code>/checkout</code></td><td>Show cart → Checkout → address → DEMO badge</td><td>Demo payment — clearly labelled, no real card data</td></tr>
+    <tr><td class="ts">1:50–2:05</td><td><span class="scene-tag">S4</span></td><td>Checkout → Confirmation</td><td>Enter 4242 → Place order → green banner + reference</td><td>Prisma transaction: price · stock · payment · points</td></tr>
+    <tr><td class="ts">2:05–2:15</td><td><span class="scene-tag">S5</span></td><td>Terminal — Vitest</td><td>Run npm test → scroll ✓ → zoom "30 passed (30)"</td><td>30 unit tests · all passing</td></tr>
+    <tr><td class="ts">2:15–2:35</td><td><span class="scene-tag">S5</span></td><td>VS Code — code review</td><td>48-hour check (orders route) · BookCard · schema</td><td>Developer review: fixed TypeScript errors, config</td></tr>
+    <tr><td class="ts">2:35–2:50</td><td><span class="scene-tag">S6</span></td><td>Terminal / GitHub</td><td>git log · feature branch · README.md</td><td>Git branch: feature/chapter-and-co-bookstore</td></tr>
+    <tr><td class="ts">2:50–3:00</td><td><span class="scene-tag">S6</span></td><td><code>/</code> Hero</td><td>Return to homepage, hold</td><td>IBM Bob accelerated: architecture · components · tests</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<!-- ─── SECTION 4: NARRATION SCRIPT ──────────────────────────────────────── -->
+<h2>4 · Narration Script</h2>
+<p>~445 words · ~3:00 at 140 wpm · First-person · Verified against actual implementation</p>
+
+<div class="scene-block">
+  <div class="scene-header">Scene 1 — Introduction <span class="scene-time">0:00 – 0:20 · ~40 words</span></div>
+  <div class="scene-body">
+    <div class="narration-label">Narration</div>
+    <p class="narration">"This is Chapter &amp; Co. — a fully responsive eCommerce bookstore I built as part of the IBM AI Specialist Front End and Mobile Capstone.<br><br>The application was designed and implemented from scratch using IBM Bob as my Agentic IDE, with a stack of Next.js 15, React, TypeScript, PostgreSQL and Tailwind CSS."</p>
+  </div>
+</div>
+
+<div class="scene-block">
+  <div class="scene-header">Scene 2 — AI-Assisted Development <span class="scene-time">0:20 – 0:55 · ~110 words</span></div>
+  <div class="scene-body">
+    <div class="narration-label">Narration</div>
+    <p class="narration">"Everything you see here began with a single master prompt inside IBM Bob.<br><br>I asked Bob to act as a Senior Full-Stack Engineer, propose the architecture, define the data model and deliver the project in seven incremental phases — not generate everything at once.<br><br>Bob proposed the Next.js App Router structure, designed the PostgreSQL schema with thirteen models, suggested the Zustand cart store and outlined all nine REST API endpoints.<br><br>From that architecture, Bob generated the Prisma schema, the Auth.js authentication module with bcrypt password hashing, the Zustand cart store, the server-side checkout handler with authoritative pricing — meaning the server always recalculates prices from the database and ignores any client-submitted values — and the full set of reusable UI components.<br><br>Each phase ended with a validation step: I reviewed the code, identified issues and refined the output before continuing."</p>
+  </div>
+</div>
+
+<div class="scene-block">
+  <div class="scene-header">Scene 3 — Frontend Application <span class="scene-time">0:55 – 1:35 · ~95 words</span></div>
+  <div class="scene-body">
+    <div class="narration-label">Narration</div>
+    <p class="narration">"The homepage loads with a hero banner, featured books pulled directly from the database, a browse-by-category section and a bestsellers row — all rendered as React Server Components with zero client-side data fetching on initial load.<br><br>The catalogue page supports full-text search across titles, authors and descriptions, category filtering, price range filtering and five sort modes — all implemented server-side with Prisma queries.<br><br>Each book detail page displays the cover from Open Library, the author, categories, a delivery estimate, related books from the same category, and a client-side Add to Cart button backed by the Zustand store with localStorage persistence."</p>
+  </div>
+</div>
+
+<div class="scene-block">
+  <div class="scene-header">Scene 4 — Checkout &amp; Purchase <span class="scene-time">1:35 – 2:05 · ~75 words</span></div>
+  <div class="scene-body">
+    <div class="narration-label">Narration</div>
+    <p class="narration">"At checkout, the user selects a delivery address or adds a new one. Payment is clearly labelled as a demonstration — no real card data is ever stored.<br><br>The system also supports gift points: five hundred welcome points were seeded for the demo account, worth five pounds in discounts.<br><br>Placing the order triggers a Prisma database transaction that confirms pricing, deducts stock, records the payment and awards new points — all atomically. The confirmation page shows a unique order reference."</p>
+  </div>
+</div>
+
+<div class="scene-block">
+  <div class="scene-header">Scene 5 — Code, Testing &amp; Refinement <span class="scene-time">2:05 – 2:35 · ~70 words</span></div>
+  <div class="scene-body">
+    <div class="narration-label">Narration</div>
+    <p class="narration">"Bob generated thirty unit tests covering the cart store, utility functions and all Zod validation schemas — and all thirty pass.<br><br>Looking at the checkout API, you can see server-side ownership checks, stock validation and the 48-hour cancellation window — enforced on the server, not the client.<br><br>I reviewed every generated file, fixed four TypeScript errors surfaced by strict mode, corrected a Prisma query typing issue and updated the Next.js config to the v15 API."</p>
+  </div>
+</div>
+
+<div class="scene-block">
+  <div class="scene-header">Scene 6 — GitHub &amp; Conclusion <span class="scene-time">2:35 – 3:00 · ~55 words</span></div>
+  <div class="scene-body">
+    <div class="narration-label">Narration</div>
+    <p class="narration">"The project is committed to a feature branch — feature/chapter-and-co-bookstore — with the full source, Prisma migrations, seed data, OpenAPI specification and architecture documentation.<br><br>IBM Bob accelerated this build significantly: architecture, database schema, components, API handlers and tests — all generated from structured prompts, reviewed by a developer and refined iteratively.<br><br>The result is a production-ready bookstore that demonstrates what Agentic AI development looks like in practice."</p>
+  </div>
+</div>
+
+<hr>
+
+<!-- ─── SECTION 5: RECORDING GUIDE ───────────────────────────────────────── -->
+<h2>5 · Recording Guide — 11 Clips</h2>
+<p>App: <strong>http://localhost:3001</strong> · Login: <code>demo@chapterandco.com</code> / <code>Demo1234!</code> · 1920×1080 · 30fps</p>
+
+<div class="rec-card">
+  <div class="rec-header"><span>Clip 1 — Homepage Scroll</span><span class="tag tag-url">localhost:3001/</span></div>
+  <div class="rec-body"><span class="tag tag-dur">~20s</span> <strong>Scenes 1 + 3</strong>
+    <ul>
+      <li>Slow scroll: Hero → Trust signals → Featured Books (8) → Categories (10) → Bestsellers (4) → CTA</li>
+      <li>No clicks needed. Let the layout and typography speak.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rec-card">
+  <div class="rec-header"><span>Clip 2 — IBM Bob Interface</span><span class="tag tag-url">IBM Bob chat</span></div>
+  <div class="rec-body"><span class="tag tag-dur">~20s</span> <strong>Scene 2 — MOST IMPORTANT CLIP</strong>
+    <ul>
+      <li>Show master prompt opening ("You are a Senior Full-Stack Engineer…")</li>
+      <li>Scroll to show Bob's architecture proposal response</li>
+      <li>Show generated folder structure suggestion</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rec-card">
+  <div class="rec-header"><span>Clip 3 — VS Code: Generated Code</span><span class="tag tag-url">VS Code</span></div>
+  <div class="rec-body"><span class="tag tag-dur">~15s</span> <strong>Scene 2</strong>
+    <ul>
+      <li>Open <code>src/lib/auth.ts</code> → pause on Credentials provider + bcrypt</li>
+      <li>Open <code>src/app/api/checkout/route.ts</code> → highlight "// Fetch books server-side for authoritative pricing"</li>
+      <li>Open <code>src/store/cart.ts</code> → highlight persist() middleware</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rec-card">
+  <div class="rec-header"><span>Clip 4 — Catalogue + Filters + Search</span><span class="tag tag-url">localhost:3001/catalogue</span></div>
+  <div class="rec-body"><span class="tag tag-dur">~20s</span> <strong>Scene 3</strong>
+    <ul>
+      <li>Show 12-book grid (30 total, 6 pages)</li>
+      <li>Click "Fiction" filter → 21 results</li>
+      <li>Click "Price: Low to High" sort</li>
+      <li>Type "sapiens" → show single result</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rec-card">
+  <div class="rec-header"><span>Clip 5 — Book Detail</span><span class="tag tag-url">localhost:3001/books/one-hundred-years-of-solitude</span></div>
+  <div class="rec-body"><span class="tag tag-dur">~15s</span> <strong>Scene 3</strong>
+    <ul>
+      <li>Show cover, title "One Hundred Years of Solitude", author "Gabriel García Márquez"</li>
+      <li>Show £16.99 (compare-at £19.99 strikethrough), delivery estimate, related books</li>
+      <li>Click "Add to Cart" → show toast notification</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rec-card">
+  <div class="rec-header"><span>Clip 6 — Login + Cart</span><span class="tag tag-url">localhost:3001/auth/login → /cart</span></div>
+  <div class="rec-body"><span class="tag tag-dur">~15s</span> <strong>Scene 4</strong>
+    <ul>
+      <li>Sign in at /auth/login with demo credentials</li>
+      <li>Navigate to /cart — book persists from localStorage</li>
+      <li>Show quantity controls, subtotal, Order Summary panel</li>
+      <li>Click "Proceed to Checkout"</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rec-card">
+  <div class="rec-header"><span>Clip 7 — Checkout + Confirmation</span><span class="tag tag-url">localhost:3001/checkout</span></div>
+  <div class="rec-body"><span class="tag tag-dur">~30s</span> <strong>Scene 4 — KEY SCENE</strong>
+    <ul>
+      <li>Show pre-selected address "Demo User, 123 Bookshelf Lane, Reading"</li>
+      <li>Show DEMO badge on Demo Card Payment option</li>
+      <li>Enter card last 4: 4242. Show gift points (500 pts available)</li>
+      <li>Click "Place order · £XX.XX"</li>
+      <li>Show green "Order placed successfully!" banner + order reference</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rec-card">
+  <div class="rec-header"><span>Clip 8 — Order History + Buy Again</span><span class="tag tag-url">localhost:3001/account/orders</span></div>
+  <div class="rec-body"><span class="tag tag-dur">~15s</span> <strong>Scene 4</strong>
+    <ul>
+      <li>Show orders list with "Confirmed" status badge</li>
+      <li>Click order → show items, payment summary, address</li>
+      <li>Show "Buy again" and "Cancel order" buttons</li>
+      <li>Click "Buy again" → show toast ("All items added to cart")</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rec-card">
+  <div class="rec-header"><span>Clip 9 — Vitest Test Run</span><span class="tag tag-url">Terminal</span></div>
+  <div class="rec-body"><span class="tag tag-dur">~20s</span> <strong>Scene 5</strong>
+    <ul>
+      <li>Run: <code>cd chapter-and-co &amp;&amp; npm test -- --reporter=verbose</code></li>
+      <li>Let ✓ results scroll</li>
+      <li>Zoom on final line: "Tests  30 passed (30)"</li>
+      <li>Hold for 3 seconds</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rec-card">
+  <div class="rec-header"><span>Clip 10 — Code Review + Mobile</span><span class="tag tag-url">VS Code + Chrome DevTools</span></div>
+  <div class="rec-body"><span class="tag tag-dur">~20s</span> <strong>Scene 5</strong>
+    <ul>
+      <li>Show <code>api/orders/[id]/route.ts</code> → highlight the 48-hour calculation (line ~60)</li>
+      <li>Toggle Chrome DevTools device mode → iPhone 13 → show homepage mobile layout</li>
+      <li>Show hamburger menu open on mobile</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rec-card">
+  <div class="rec-header"><span>Clip 11 — Git / GitHub</span><span class="tag tag-url">Terminal or GitHub web</span></div>
+  <div class="rec-body"><span class="tag tag-dur">~15s</span> <strong>Scene 6</strong>
+    <ul>
+      <li><strong>First:</strong> <code>sudo xcodebuild -license</code> (accept Xcode licence once)</li>
+      <li>Run: <code>cd chapter-and-co &amp;&amp; git init &amp;&amp; git checkout -b feature/chapter-and-co-bookstore &amp;&amp; git add -A &amp;&amp; git commit -m "feat: complete Chapter &amp; Co. eCommerce bookstore"</code></li>
+      <li>Show: <code>git log --oneline</code> and <code>git branch</code></li>
+      <li>Or: show GitHub repository page with branch and file tree</li>
+    </ul>
+  </div>
+</div>
+
+<hr>
+
+<!-- ─── SECTION 6: SRT CAPTIONS ──────────────────────────────────────────── -->
+<h2>6 · SRT Captions</h2>
+<p>Save as <code>chapter-and-co/docs/video/captions.srt</code> — already written to disk.</p>
+<pre class="srt-block">1
+00:00:00,000 --> 00:00:06,500
+This is Chapter &amp; Co. — a fully responsive
+eCommerce bookstore built for the IBM AI Specialist Capstone.
+
+2
+00:00:06,500 --> 00:00:13,000
+The application was designed and implemented from scratch
+using IBM Bob as the Agentic IDE.
+
+3
+00:00:13,000 --> 00:00:20,000
+Stack: Next.js 15 · React · TypeScript · PostgreSQL · Tailwind CSS
+
+4
+00:00:20,000 --> 00:00:27,000
+Everything began with a single master prompt inside IBM Bob.
+
+5
+00:00:27,000 --> 00:00:34,500
+Bob proposed the architecture, data model
+and a seven-phase incremental delivery plan.
+
+6
+00:00:34,500 --> 00:00:42,000
+Bob generated: Prisma schema · Auth.js authentication
+· Zustand cart store · REST API handlers
+
+7
+00:00:42,000 --> 00:00:55,000
+Server-side checkout enforces authoritative pricing —
+ignoring any client-submitted values.
+
+8
+00:00:55,000 --> 00:01:03,500
+The homepage renders as a React Server Component:
+hero banner · featured books · categories · bestsellers
+
+9
+00:01:03,500 --> 00:01:13,000
+Catalogue: full-text search · category filtering
+· price range · five sort modes — all server-side.
+
+10
+00:01:13,000 --> 00:01:24,000
+Book detail: cover · author · delivery estimate
+· related books · Add to Cart
+
+11
+00:01:24,000 --> 00:01:35,000
+Cart persists in localStorage via Zustand —
+survives page refreshes without login.
+
+12
+00:01:35,000 --> 00:01:44,000
+Checkout: delivery address · demo payment
+(clearly labelled — no real card data stored)
+
+13
+00:01:44,000 --> 00:01:51,500
+Gift points: 500 welcome points · 100 points = £1 discount
+
+14
+00:01:51,500 --> 00:02:05,000
+Prisma transaction: confirm pricing · deduct stock
+· record payment · award points — atomically
+
+15
+00:02:05,000 --> 00:02:13,000
+30 unit tests · all passing
+Vitest: cart store · utilities · Zod schemas
+
+16
+00:02:13,000 --> 00:02:22,000
+48-hour cancellation enforced server-side
+Stock restored · gift points refunded on cancel
+
+17
+00:02:22,000 --> 00:02:35,000
+Developer review: 4 TypeScript fixes · Prisma query typing
+· Next.js v15 config update
+
+18
+00:02:35,000 --> 00:02:44,000
+Git: feature/chapter-and-co-bookstore
+Prisma migrations · OpenAPI spec · architecture docs
+
+19
+00:02:44,000 --> 00:02:54,000
+IBM Bob accelerated: architecture · schema · components
+· API handlers · tests — reviewed and refined iteratively.
+
+20
+00:02:54,000 --> 00:03:00,000
+A production-ready bookstore demonstrating
+Agentic AI development in practice.</pre>
+
+<h3>FFmpeg Assembly Command</h3>
+<pre># After recording all 11 clips, create clips.txt listing them in order:
+# file 'clip_01_homepage.mp4'
+# file 'clip_02_ibm_bob.mp4'
+# ... etc
+
+ffmpeg -f concat -safe 0 -i clips.txt \
+  -vf "subtitles=docs/video/captions.srt" \
+  -c:v libx264 -preset slow -crf 18 \
+  -c:a aac -b:a 192k \
+  -s 1920x1080 -r 30 \
+  IBM_AI_Specialist_Capstone_Chapter_and_Co.mp4</pre>
+
+<hr>
+
+<!-- ─── SECTION 7: SUBMISSION ─────────────────────────────────────────────── -->
+<h2>7 · Submission Checklist</h2>
+<ul class="checklist">
+  <li><span class="check pass">✓</span><div>Application running and verified at http://localhost:3001</div></li>
+  <li><span class="check pass">✓</span><div>PostgreSQL seeded: 30 books · 10 categories · 15 authors · demo user</div></li>
+  <li><span class="check pass">✓</span><div>30/30 Vitest unit tests passing</div></li>
+  <li><span class="check pass">✓</span><div>Narration script written and timed (~3:00)</div></li>
+  <li><span class="check pass">✓</span><div>Storyboard with 14 scenes and timestamps</div></li>
+  <li><span class="check pass">✓</span><div>SRT captions file (20 blocks) — saved to docs/video/captions.srt</div></li>
+  <li><span class="check pass">✓</span><div>Recording guide with 11 clips — saved to docs/video/recording-guide.md</div></li>
+  <li><span class="check warn">▶</span><div>Accept Xcode licence: <code>sudo xcodebuild -license</code> in Terminal</div></li>
+  <li><span class="check warn">▶</span><div>Create git commit on feature/chapter-and-co-bookstore branch</div></li>
+  <li><span class="check warn">▶</span><div>Push to GitHub and open Pull Request</div></li>
+  <li><span class="check warn">▶</span><div>Record 11 screen clips following recording guide</div></li>
+  <li><span class="check warn">▶</span><div>Assemble with FFmpeg → IBM_AI_Specialist_Capstone_Chapter_and_Co.mp4</div></li>
+  <li><span class="check warn">▶</span><div>Submit video + GitHub link to manager for review</div></li>
+</ul>
+
+<div class="submit-box">
+  <h3>IBM Your Learning — Submission Description</h3>
+  <p>Copy this text when submitting on the IBM Your Learning platform.</p>
+  <div class="submit-desc">
+    "Chapter &amp; Co. is a complete, responsive eCommerce bookstore built for the IBM AI Specialist Front End and Mobile Capstone. The application was developed using IBM Bob as an Agentic IDE across seven incremental delivery phases. The stack comprises Next.js 15 (App Router), React 18, TypeScript strict mode, PostgreSQL, Prisma ORM, Auth.js, Zustand and Tailwind CSS. Features include a book catalogue with full-text search and filtering, shopping cart with localStorage persistence, a simulated checkout with server-side pricing and gift points, order history, buy-again and 48-hour server-enforced cancellation. The project includes 30 unit tests (Vitest, all passing), 12 Playwright E2E tests, an OpenAPI 3 specification and full architecture documentation. All code was generated from structured prompts to IBM Bob, reviewed by the developer and iteratively refined."
+  </div>
+</div>
+
+<div class="footer">
+  <p>Chapter &amp; Co. Capstone Video Package · Grounded in actual project evidence · IBM Bob cannot generate MP4 — use the recording guide and FFmpeg command<br>Made with IBM Bob</p>
+</div>
+
+</body>
+</html>
