@@ -1,0 +1,81 @@
+1
+00:00:00,000 --> 00:00:07,000
+Cloud FullStack Capstone — Chapter & Co.
+Java 21 Spring Boot Backend with IBM Bob
+
+2
+00:00:07,000 --> 00:00:14,000
+Next.js frontend (port 3000) +
+Spring Boot backend (port 8080) —
+same PostgreSQL database
+
+3
+00:00:14,000 --> 00:00:25,000
+IBM Bob master prompt generated:
+9 JPA entities · 6 repositories
+5 services · 5 controllers
+Spring Security + JWT
+
+4
+00:00:25,000 --> 00:00:40,000
+Architecture: Spring Boot reuses
+existing Prisma schema tables
+ddl-auto=validate — zero schema changes
+
+5
+00:00:40,000 --> 00:00:55,000
+IBM Bob prompt →
+135 files generated
+Human review: table mappings,
+security context fixes
+
+6
+00:00:55,000 --> 00:01:20,000
+Maven project structure:
+entity/ · repository/ · service/
+controller/ · security/ · config/
+GlobalExceptionHandler
+
+7
+00:01:20,000 --> 00:01:40,000
+Swagger UI at :8080/swagger-ui.html
+16 REST endpoints documented
+GET /api/v1/books — live demo
+
+8
+00:01:40,000 --> 00:02:00,000
+Spring Security — stateless JWT
+POST /api/v1/auth/login → Bearer token
+Protected endpoints: 401 without token
+
+9
+00:02:00,000 --> 00:02:15,000
+48-hour cancellation rule —
+enforced in OrderService.cancelOrder()
+Stock restored · Gift points refunded
+
+10
+00:02:15,000 --> 00:02:25,000
+Tests run: 40 · Failures: 0
+mvn test — live terminal
+
+11
+00:02:25,000 --> 00:02:33,000
+Unit tests: AuthService · OrderService
+Mockito mocks · business rule assertions
+
+12
+00:02:33,000 --> 00:02:40,000
+@DataJpaTest: UserRepository
+DB persistence with H2 in-memory
+
+13
+00:02:40,000 --> 00:02:48,000
+@WebMvcTest: AuthController · BookController
+MockMvc · status codes · JSON assertions
+
+14
+00:02:48,000 --> 00:03:00,000
+GitHub: feature/cloud-fullstack-spring-boot
+Pull Request — isolated from FE capstone
+Built with IBM Bob
