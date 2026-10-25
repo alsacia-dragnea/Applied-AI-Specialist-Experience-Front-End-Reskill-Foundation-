@@ -1,0 +1,7 @@
+com/chapterandco/service/OrderServiceTest.class
+com/chapterandco/controller/AuthControllerTest.class
+com/chapterandco/repository/UserRepositoryTest.class
+com/chapterandco/security/JwtTokenProviderTest.class
+com/chapterandco/ChapterAndCoApplicationTests.class
+com/chapterandco/controller/BookControllerTest.class
+com/chapterandco/service/AuthServiceTest.class

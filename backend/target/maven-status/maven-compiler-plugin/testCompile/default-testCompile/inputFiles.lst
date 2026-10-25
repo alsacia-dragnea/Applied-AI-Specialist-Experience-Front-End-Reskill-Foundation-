@@ -1,0 +1,7 @@
+/Users/chimigerualsacia/.bob/playground/chapter-and-co/backend/src/test/java/com/chapterandco/ChapterAndCoApplicationTests.java
+/Users/chimigerualsacia/.bob/playground/chapter-and-co/backend/src/test/java/com/chapterandco/controller/AuthControllerTest.java
+/Users/chimigerualsacia/.bob/playground/chapter-and-co/backend/src/test/java/com/chapterandco/controller/BookControllerTest.java
+/Users/chimigerualsacia/.bob/playground/chapter-and-co/backend/src/test/java/com/chapterandco/repository/UserRepositoryTest.java
+/Users/chimigerualsacia/.bob/playground/chapter-and-co/backend/src/test/java/com/chapterandco/service/AuthServiceTest.java
+/Users/chimigerualsacia/.bob/playground/chapter-and-co/backend/src/test/java/com/chapterandco/service/JwtTokenProviderTest.java
+/Users/chimigerualsacia/.bob/playground/chapter-and-co/backend/src/test/java/com/chapterandco/service/OrderServiceTest.java

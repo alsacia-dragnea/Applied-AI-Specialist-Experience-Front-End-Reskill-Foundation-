@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter &amp; Co. — Capstone Documentation</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #1f2328;
+    background: #ffffff;
+  }
+  .page { max-width: 760px; margin: 0 auto; padding: 48px 24px 64px; }
+
+  .cover {
+    background: #2C1810;
+    color: #F5F0E8;
+    border-radius: 8px;
+    padding: 40px 36px 32px;
+    margin-bottom: 40px;
+  }
+  .cover-label {
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #C8956C;
+    margin-bottom: 10px;
+  }
+  .cover h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    margin-bottom: 8px;
+  }
+  .cover-sub {
+    font-size: 14px;
+    color: #c9b99c;
+    margin-bottom: 20px;
+    max-width: 520px;
+  }
+  .cover-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    background: rgba(200,149,108,.2);
+    border: 1px solid rgba(200,149,108,.35);
+    color: #e0c4a8;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: .04em;
+  }
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2C1810;
+    margin: 36px 0 14px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f2328;
+    margin: 20px 0 6px;
+  }
+  p { margin-bottom: 10px; color: #374151; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  th {
+    background: #f7f8fa;
+    text-align: left;
+    padding: 7px 10px;
+    font-weight: 600;
+    color: #57606a;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  td { padding: 7px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .mono {
+    font-family: "SF Mono", "Consolas", "Liberation Mono", monospace;
+    font-size: 12px;
+    background: #f7f8fa;
+    padding: 2px 5px;
+    border-radius: 3px;
+    color: #2C1810;
+  }
+  pre {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: "SF Mono", "Consolas", monospace;
+    font-size: 12px;
+    line-height: 1.55;
+    overflow-x: auto;
+    margin-bottom: 16px;
+    color: #2C1810;
+  }
+  .phases { display: grid; gap: 10px; margin-bottom: 8px; }
+  .phase {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-left: 3px solid #C8956C;
+    border-radius: 6px;
+    padding: 10px 14px;
+  }
+  .phase-title { font-weight: 700; font-size: 13px; color: #2C1810; }
+  .phase-desc { font-size: 12px; color: #57606a; margin-top: 2px; }
+  .ai-entry {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .ai-header {
+    background: #f7f8fa;
+    padding: 8px 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .ai-num {
+    background: #2C1810;
+    color: #F5F0E8;
+    font-size: 10px;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .ai-title { font-weight: 700; font-size: 13px; }
+  .ai-body { padding: 10px 14px; font-size: 13px; }
+  .ai-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #57606a;
+    font-weight: 600;
+    margin-top: 6px;
+  }
+  .ai-value { color: #374151; }
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 12px;
+    letter-spacing: .04em;
+  }
+  .badge-green { background: #dcfce7; color: #166534; }
+  .badge-amber { background: #fef9c3; color: #854d0e; }
+  .badge-blue  { background: #dbeafe; color: #1e40af; }
+  .screens { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .screen {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+  .screen-num { font-size: 10px; color: #C8956C; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .screen-title { font-weight: 700; font-size: 13px; color: #1f2328; }
+  .screen-desc { font-size: 12px; color: #57606a; margin-top: 3px; }
+  hr { border: none; border-top: 1px solid #e5e7eb; margin: 32px 0; }
+  .doc-footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    font-size: 12px;
+    color: #57606a;
+  }
+  @media (max-width: 600px) {
+    .screens { grid-template-columns: 1fr; }
+    .cover { padding: 24px 20px; }
+    .page { padding: 24px 16px 48px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="cover-label">AI Specialist Front End &amp; Mobile &mdash; Capstone Project</div>
+    <h1>Chapter &amp; Co.</h1>
+    <p class="cover-sub">A complete, responsive eCommerce bookstore built with Agentic AI development, demonstrating how IBM Bob accelerates full-stack delivery while maintaining code quality, accessibility and security.</p>
+    <div class="cover-pills">
+      <span class="pill">Next.js 15</span>
+      <span class="pill">TypeScript Strict</span>
+      <span class="pill">PostgreSQL + Prisma</span>
+      <span class="pill">Auth.js</span>
+      <span class="pill">Zustand</span>
+      <span class="pill">Zod</span>
+      <span class="pill">Vitest + Playwright</span>
+      <span class="pill">IBM Bob</span>
+      <span class="pill">GitHub</span>
+    </div>
+  </div>
+
+  <h2>1 &middot; Technology Stack</h2>
+  <table>
+    <thead><tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>Frontend</td><td>Next.js 15 (App Router), React 18</td><td>Pages, server components, routing</td></tr>
+      <tr><td>Language</td><td>TypeScript (strict mode)</td><td>Type safety across all layers</td></tr>
+      <tr><td>Styling</td><td>Tailwind CSS v3</td><td>Utility-first responsive design</td></tr>
+      <tr><td>UI components</td><td>shadcn/ui pattern</td><td>Reusable accessible primitives</td></tr>
+      <tr><td>Backend</td><td>Next.js Route Handlers (REST)</td><td>API endpoints with Zod validation</td></tr>
+      <tr><td>Database</td><td>PostgreSQL 17 (Docker)</td><td>Relational data with full constraints</td></tr>
+      <tr><td>ORM</td><td>Prisma</td><td>Type-safe queries and migrations</td></tr>
+      <tr><td>Authentication</td><td>Auth.js v5 (Credentials + JWT)</td><td>Login, register, protected routes</td></tr>
+      <tr><td>State management</td><td>Zustand + localStorage persist</td><td>Client-side cart with persistence</td></tr>
+      <tr><td>Validation</td><td>Zod</td><td>Shared frontend + server schemas</td></tr>
+      <tr><td>Unit tests</td><td>Vitest + React Testing Library</td><td>Cart, utils, validation tests</td></tr>
+      <tr><td>E2E tests</td><td>Playwright</td><td>Full user journey automation</td></tr>
+      <tr><td>Agentic IDE</td><td>IBM Bob</td><td>AI-assisted development</td></tr>
+      <tr><td>Version control</td><td>GitHub (feature branch + PR)</td><td>Branching strategy, code delivery</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2 &middot; Application Screens</h2>
+  <div class="screens">
+    <div class="screen">
+      <div class="screen-num">01</div>
+      <div class="screen-title">Homepage <code>/</code></div>
+      <div class="screen-desc">Hero banner &middot; Featured books &middot; Browse by category &middot; Bestsellers &middot; Personalized recommendations &middot; Footer</div>
+    </div>
+    <div class="screen">
+      <div class="screen-num">02</div>
+      <div class="screen-title">Book Catalogue <code>/catalogue</code></div>
+      <div class="screen-desc">Grid listing &middot; Category / author / price filters &middot; Sort &middot; Pagination &middot; Empty &amp; loading states</div>
+    </div>
+    <div class="screen">
+      <div class="screen-num">03</div>
+      <div class="screen-title">Book Detail <code>/books/[slug]</code></div>
+      <div class="screen-desc">Cover &middot; Title &middot; Author &middot; Description &middot; Price &middot; Delivery estimate &middot; Related books &middot; Add to cart</div>
+    </div>
+    <div class="screen">
+      <div class="screen-num">04</div>
+      <div class="screen-title">Shopping Cart <code>/cart</code></div>
+      <div class="screen-desc">Item list &middot; Quantity controls &middot; Subtotal &middot; Free delivery threshold &middot; Proceed to checkout</div>
+    </div>
+    <div class="screen">
+      <div class="screen-num">05</div>
+      <div class="screen-title">Checkout <code>/checkout</code></div>
+      <div class="screen-desc">Address selection &middot; Add address &middot; Demo payment &middot; Gift points redemption &middot; Order summary</div>
+    </div>
+    <div class="screen">
+      <div class="screen-num">06</div>
+      <div class="screen-title">Order Confirmation</div>
+      <div class="screen-desc">Confirmation banner &middot; Items &middot; Payment summary &middot; Unique order reference &middot; Delivery address</div>
+    </div>
+    <div class="screen">
+      <div class="screen-num">07</div>
+      <div class="screen-title">Order History <code>/account/orders</code></div>
+      <div class="screen-desc">All orders list with status badges &middot; Cancellable orders highlighted</div>
+    </div>
+    <div class="screen">
+      <div class="screen-num">08</div>
+      <div class="screen-title">Order Detail</div>
+      <div class="screen-desc">Full order details &middot; Buy again &middot; Cancel within 48 hrs &middot; Cancellation eligibility check</div>
+    </div>
+    <div class="screen">
+      <div class="screen-num">09</div>
+      <div class="screen-title">Account <code>/account</code></div>
+      <div class="screen-desc">Profile stats &middot; Recent orders &middot; Gift point balance &middot; Protected route</div>
+    </div>
+    <div class="screen">
+      <div class="screen-num">10</div>
+      <div class="screen-title">Auth <code>/auth/login</code></div>
+      <div class="screen-desc">Sign in &middot; Register with Zod validation &middot; Error handling &middot; Redirect after login</div>
+    </div>
+  </div>
+
+  <h2>3 &middot; Architecture</h2>
+  <h3>Data flow</h3>
+<pre>Browser &rarr; Server Component &rarr; Prisma &rarr; PostgreSQL
+       &rarr; Client Component &rarr; /api/ Route Handler &rarr; Prisma &rarr; PostgreSQL
+       &rarr; Zustand (cart, localStorage)</pre>
+
+  <h3>Key architectural decisions</h3>
+  <table>
+    <thead><tr><th>Decision</th><th>Rationale</th></tr></thead>
+    <tbody>
+      <tr><td>Server Components for pages</td><td>Direct Prisma access — eliminates API waterfall, improves page load</td></tr>
+      <tr><td>Client Components only where needed</td><td>Cart, filters, and forms need interactivity; everything else is static server rendering</td></tr>
+      <tr><td>Server-side pricing in /api/checkout</td><td>Client prices ignored; all totals recalculated from DB to prevent manipulation</td></tr>
+      <tr><td>JWT sessions</td><td>Stateless, scales horizontally, no session table overhead</td></tr>
+      <tr><td>Zustand + localStorage for cart</td><td>Cart persists across page refreshes and before login</td></tr>
+      <tr><td>Zod schemas shared FE + BE</td><td>Single source of truth; same schema validates form and API route</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Folder structure</h3>
+<pre>chapter-and-co/
+├── prisma/
+│   ├── schema.prisma          13 models, all relations + indexes
+│   ├── seed.ts                30 books, 10 categories, 15 authors, demo user
+│   └── migrations/            Version-controlled migration SQL
+├── src/
+│   ├── app/
+│   │   ├── page.tsx           Homepage (Server Component)
+│   │   ├── catalogue/         Catalogue with server-side filtering
+│   │   ├── books/[slug]/      Book detail
+│   │   ├── cart/              Shopping cart (Client Component)
+│   │   ├── checkout/          Checkout flow (Client Component)
+│   │   ├── account/           Protected account + orders
+│   │   ├── auth/              Login + Register
+│   │   └── api/               REST Route Handlers
+│   ├── components/
+│   │   ├── books/             BookCard, AddToCartButton
+│   │   ├── catalogue/         CatalogueFilters, PaginationControls
+│   │   ├── layout/            Header, Footer
+│   │   └── ui/                Button, Card, Input, Badge, Toast ...
+│   ├── lib/                   auth.ts, prisma.ts, utils.ts, validations.ts
+│   ├── middleware.ts           Protects /account and /checkout
+│   ├── store/cart.ts          Zustand + persist middleware
+│   └── tests/                 Unit (Vitest) + E2E (Playwright)
+├── docs/
+│   ├── architecture.md
+│   ├── openapi.yaml           OpenAPI 3 spec
+│   └── video/                 Narration script, captions, recording guide
+└── README.md</pre>
+
+  <h2>4 &middot; Data Model</h2>
+  <h3>Entity relationships</h3>
+<pre>User &mdash;&lt; Order &mdash;&lt; OrderItem &gt;&mdash; Book &gt;&mdash; BookCategory &gt;&mdash; Category
+ |                                |
+ +&mdash;&lt; Address                     +&mdash;&mdash; Author
+ +&mdash;&lt; GiftPointsTransaction
+Order &mdash;&mdash; Payment</pre>
+
+  <table>
+    <thead><tr><th>Model</th><th>Key fields</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>User</code></td><td>id, email, passwordHash, giftPoints, role</td><td>bcrypt cost 12, 500 points on registration</td></tr>
+      <tr><td><code>Book</code></td><td>id, slug, title, price, stock, featured, bestseller, coverUrl</td><td>Unique slug for SEO-friendly URLs</td></tr>
+      <tr><td><code>Author</code></td><td>id, name, bio</td><td>One author per book</td></tr>
+      <tr><td><code>Category</code></td><td>id, name, slug</td><td>Many-to-many via BookCategory</td></tr>
+      <tr><td><code>BookCategory</code></td><td>bookId, categoryId</td><td>Composite PK join table</td></tr>
+      <tr><td><code>Address</code></td><td>id, userId, line1, city, postcode, country</td><td>Ownership enforced server-side</td></tr>
+      <tr><td><code>Order</code></td><td>id, reference, userId, status, subtotal, total, giftPointsUsed</td><td>Status: PENDING &rarr; CONFIRMED &rarr; SHIPPED &rarr; DELIVERED | CANCELLED</td></tr>
+      <tr><td><code>OrderItem</code></td><td>orderId, bookId, quantity, unitPrice</td><td>unitPrice captured at time of order</td></tr>
+      <tr><td><code>Payment</code></td><td>orderId, method, status, amount</td><td>Demo only — no real card data</td></tr>
+      <tr><td><code>GiftPointsTransaction</code></td><td>userId, orderId, type, points, balance</td><td>Full audit trail for earn/redeem/refund</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Seed data:</strong> 30 realistic books &middot; 10 categories (Fiction, Non-Fiction, Science, History, Thriller, Self-Help, Sci-Fi, Biography, Philosophy, Classic Literature) &middot; 15 authors &middot; 1 demo user.</p>
+
+  <h2>5 &middot; API Endpoints</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Path</th><th>Auth</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/books</code></td><td>&mdash;</td><td>List books — supports search, category, author, sort, page</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/recommendations</code></td><td>Optional</td><td>Personalized recommendations; falls back to featured books</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/addresses</code></td><td>&#10003;</td><td>List authenticated user's addresses</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/addresses</code></td><td>&#10003;</td><td>Create a new delivery address</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/gift-points</code></td><td>&#10003;</td><td>Current gift point balance + transaction history</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/checkout</code></td><td>&#10003;</td><td>Place order: server-side pricing, stock check, Prisma transaction</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/orders</code></td><td>&#10003;</td><td>Full order history for authenticated user</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/orders/[id]</code></td><td>&#10003;</td><td>Order detail with items, payment, address</td></tr>
+      <tr><td><span class="badge badge-amber">PATCH</span></td><td><code>/api/orders/[id]</code></td><td>&#10003;</td><td>Cancel order — 48-hr window enforced, stock + points restored</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/auth/register</code></td><td>&mdash;</td><td>Register new user with Zod validation + bcrypt</td></tr>
+      <tr><td>*</td><td><code>/api/auth/[...nextauth]</code></td><td>&mdash;</td><td>Auth.js Credentials handler (login, session, logout)</td></tr>
+    </tbody>
+  </table>
+  <p>All inputs validated with Zod. All protected endpoints return <code>401</code> if unauthenticated. All user-scoped queries filter by <code>userId</code> to prevent IDOR. Full spec in <code>docs/openapi.yaml</code>.</p>
+
+  <h2>6 &middot; Security Notes</h2>
+  <table>
+    <thead><tr><th>Concern</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td>Password storage</td><td>bcrypt, cost factor 12</td></tr>
+      <tr><td>Payment data</td><td>No real card data collected or stored — demo flow clearly labelled</td></tr>
+      <tr><td>Server-side pricing</td><td>All prices recalculated from DB on checkout; client prices ignored</td></tr>
+      <tr><td>IDOR prevention</td><td>All user-scoped queries filter by <code>userId</code></td></tr>
+      <tr><td>Input validation</td><td>Zod on all API route handler inputs, server-side</td></tr>
+      <tr><td>Protected routes</td><td><code>middleware.ts</code> + <code>auth()</code> in route handlers</td></tr>
+      <tr><td>Secrets</td><td>No hardcoded secrets — all via environment variables</td></tr>
+      <tr><td>Cancellation abuse</td><td>48-hour window enforced server-side in PATCH handler</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7 &middot; AI Development Log (IBM Bob)</h2>
+  <p>All phases implemented interactively in IBM Bob. Each prompt was followed by human review, refinement, and validation before continuing.</p>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">1</span><span class="ai-title">Architecture &amp; Scaffold</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"You are a Senior Full-Stack Engineer... Build Chapter &amp; Co. Begin with architecture proposal and implementation plan. Do not generate all files immediately."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value">App Router folder structure, 13-model Prisma schema, API contracts, 7-phase delivery plan, full Next.js + Prisma + Auth.js scaffold (73 files, 17,067 lines).</div>
+      <div class="ai-label">Human Review</div>
+      <div class="ai-value">Approved data model, confirmed PostgreSQL/Prisma, simplified recommendation algorithm to avoid ML service dependency.</div>
+    </div>
+  </div>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">2</span><span class="ai-title">Design System &amp; Global Styles</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Create a Tailwind config and global CSS with a premium editorial aesthetic — warm neutral backgrounds, dark serif typography, tasteful accent colours."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value"><code>tailwind.config.ts</code> with brand tokens, <code>globals.css</code> with CSS custom properties, Inter + Playfair Display font pairing.</div>
+      <div class="ai-label">Refinement</div>
+      <div class="ai-value">Discovered Tailwind v4 was silently installed by npm — pinned to v3, created missing <code>postcss.config.js</code> (root cause of unstyled page).</div>
+    </div>
+  </div>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">3</span><span class="ai-title">Homepage &amp; BookCard Component</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Build the homepage with hero banner, featured books, category sections and bestsellers using server components and direct Prisma access."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value"><code>app/page.tsx</code>, <code>BookCard.tsx</code>, <code>AddToCartButton.tsx</code>, header with mobile hamburger, footer.</div>
+      <div class="ai-label">Refinement</div>
+      <div class="ai-value">Replaced unreliable Open Library cover URLs with deterministic CSS placeholder covers (8-colour dark palette hashed from book title). Added WCAG alt text.</div>
+    </div>
+  </div>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">4</span><span class="ai-title">Catalogue with Server-side Filters</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Build the catalogue page with server-side filtering by category/author/price, sorting, and pagination."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value"><code>catalogue/page.tsx</code>, <code>CatalogueFilters.tsx</code>, <code>PaginationControls.tsx</code>.</div>
+      <div class="ai-label">Refinement</div>
+      <div class="ai-value">Fixed Next.js 15 breaking change: <code>searchParams</code> must be awaited as <code>Promise&lt;{}&gt;</code> in server components.</div>
+    </div>
+  </div>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">5</span><span class="ai-title">Authentication</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Implement login and registration with Auth.js Credentials provider, bcrypt, Zod validation, and Next.js middleware route protection."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value"><code>lib/auth.ts</code>, login/register pages with react-hook-form, <code>/api/auth/register</code>, <code>middleware.ts</code>.</div>
+      <div class="ai-label">Refinement</div>
+      <div class="ai-value">Auth errors do not reveal whether email exists. Added redirect-after-login logic.</div>
+    </div>
+  </div>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">6</span><span class="ai-title">Cart &amp; Checkout</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Implement cart with Zustand + localStorage, checkout with address selection, gift points redemption, demo payment. Enforce server-side pricing."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value"><code>store/cart.ts</code>, cart and checkout pages, <code>/api/checkout</code> with full Prisma transaction.</div>
+      <div class="ai-label">Refinement</div>
+      <div class="ai-value">Client prices stripped before server processing. Free delivery threshold (£30). Demo payment banner added.</div>
+    </div>
+  </div>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">7</span><span class="ai-title">Order Management &amp; Cancellation</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Add order history, buy again, and server-enforced 48-hour cancellation with stock and gift points restoration."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value">Order list/detail pages, <code>/api/orders/[id]</code> PATCH with 48-hr check, stock restore, gift points refund.</div>
+      <div class="ai-label">Refinement</div>
+      <div class="ai-value">Fixed Next.js 15 async <code>params</code>. Server returns <code>400</code> with clear message for out-of-window cancellations.</div>
+    </div>
+  </div>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">8</span><span class="ai-title">Tests &amp; Validation</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Generate Vitest unit tests for cart store, utility functions, Zod schemas. Generate Playwright E2E tests for the full purchase flow."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value"><code>cart.test.ts</code> (9 tests), <code>utils.test.ts</code> (9 tests), <code>validations.test.ts</code> (12 tests), <code>e2e.spec.ts</code> (12 scenarios).</div>
+      <div class="ai-label">Refinement</div>
+      <div class="ai-value">All 30 unit tests passing. E2E covers full purchase, buy again, cancel within 48 hrs, cancel after 48 hrs.</div>
+    </div>
+  </div>
+
+  <h2>8 &middot; Test Results</h2>
+  <h3>Unit tests (Vitest) &mdash; 30 / 30 passing</h3>
+  <table>
+    <thead><tr><th>Suite</th><th>Tests</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><code>cart.test.ts</code></td><td>9 &mdash; add, remove, update qty, clear, subtotal, persistence</td><td><span class="badge badge-green">&#10003; PASS</span></td></tr>
+      <tr><td><code>utils.test.ts</code></td><td>9 &mdash; formatPrice, estimatedDelivery, giftPointsToDiscount, slugify</td><td><span class="badge badge-green">&#10003; PASS</span></td></tr>
+      <tr><td><code>validations.test.ts</code></td><td>12 &mdash; register, login, bookFilter, checkout Zod schemas</td><td><span class="badge badge-green">&#10003; PASS</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>E2E tests (Playwright) &mdash; 12 scenarios</h3>
+  <table>
+    <thead><tr><th>Scenario</th><th>Coverage</th></tr></thead>
+    <tbody>
+      <tr><td>Homepage loads</td><td>Hero, featured books, navigation present</td></tr>
+      <tr><td>Book catalogue</td><td>Grid loads, filter by category, sort by price</td></tr>
+      <tr><td>Search</td><td>Search bar returns relevant results</td></tr>
+      <tr><td>Book detail</td><td>Title, author, price, add to cart</td></tr>
+      <tr><td>Cart operations</td><td>Add book, update quantity, remove, empty state</td></tr>
+      <tr><td>Checkout redirect</td><td>Unauthenticated user redirected to login</td></tr>
+      <tr><td>Registration</td><td>Form validation, successful register</td></tr>
+      <tr><td>Login</td><td>Valid credentials; invalid credentials error</td></tr>
+      <tr><td>Simulated purchase</td><td>Full checkout &rarr; order confirmation</td></tr>
+      <tr><td>Order history</td><td>Orders listed with correct status badges</td></tr>
+      <tr><td>Buy again</td><td>Re-adds all items to cart</td></tr>
+      <tr><td>Cancellation within 48 hrs</td><td>Cancel button visible, order cancelled</td></tr>
+    </tbody>
+  </table>
+
+  <h2>9 &middot; Implementation Phases</h2>
+  <div class="phases">
+    <div class="phase">
+      <div class="phase-title">Phase 1 &mdash; Project setup &amp; design system</div>
+      <div class="phase-desc">Next.js 15 scaffold &middot; TypeScript strict &middot; Tailwind v3 + postcss &middot; shadcn/ui primitives &middot; PostgreSQL Docker &middot; Prisma schema + migrations &middot; Seed data</div>
+    </div>
+    <div class="phase">
+      <div class="phase-title">Phase 2 &mdash; Homepage, catalogue &amp; book detail</div>
+      <div class="phase-desc">Server component pages &middot; CSS placeholder covers &middot; Responsive header/footer &middot; Catalogue filters &middot; Pagination &middot; Book detail with delivery estimate</div>
+    </div>
+    <div class="phase">
+      <div class="phase-title">Phase 3 &mdash; Authentication &amp; cart</div>
+      <div class="phase-desc">Auth.js Credentials + JWT &middot; bcrypt &middot; Zod validation &middot; Middleware route protection &middot; Zustand cart with localStorage persistence</div>
+    </div>
+    <div class="phase">
+      <div class="phase-title">Phase 4 &mdash; Checkout, payments &amp; order management</div>
+      <div class="phase-desc">Demo payment flow &middot; Gift points redemption &middot; Server-side pricing &middot; 48-hour cancellation &middot; Buy again &middot; Stock restoration</div>
+    </div>
+    <div class="phase">
+      <div class="phase-title">Phase 5 &mdash; Database integration &amp; API documentation</div>
+      <div class="phase-desc">Prisma transactions &middot; OpenAPI 3 spec &middot; All API routes with Zod + ownership checks &middot; Recommendations algorithm</div>
+    </div>
+    <div class="phase">
+      <div class="phase-title">Phase 6 &mdash; Testing &amp; accessibility</div>
+      <div class="phase-desc">30 Vitest unit tests &middot; 12 Playwright E2E &middot; WCAG 2.1 AA-oriented markup &middot; Keyboard navigation &middot; ARIA attributes</div>
+    </div>
+    <div class="phase">
+      <div class="phase-title">Phase 7 &mdash; Refactoring, docs &amp; Git delivery</div>
+      <div class="phase-desc">README &middot; .env.example &middot; Architecture docs &middot; AI dev log &middot; Feature branch &middot; GitHub PR</div>
+    </div>
+  </div>
+
+  <h2>10 &middot; GitHub Delivery</h2>
+  <table>
+    <thead><tr><th>Item</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr><td>Repository</td><td><code>alsacia-dragnea/Applied-AI-Specialist-Experience-Front-End-Reskill-Foundation-</code></td></tr>
+      <tr><td>Branch</td><td><code>feature/chapter-and-co-bookstore</code></td></tr>
+      <tr><td>Commit</td><td><code>7531475</code> &mdash; "feat: complete Chapter &amp; Co. eCommerce bookstore"</td></tr>
+      <tr><td>.env.example</td><td>DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL template</td></tr>
+      <tr><td>README.md</td><td>Setup guide, scripts, screens, architecture, API, AI dev log</td></tr>
+      <tr><td>docs/openapi.yaml</td><td>OpenAPI 3.0.3 spec for all 11 API endpoints</td></tr>
+      <tr><td>docs/architecture.md</td><td>System overview, data flow, folder structure, security</td></tr>
+      <tr><td>docs/video/</td><td>Narration script &middot; SRT captions &middot; Recording guide</td></tr>
+    </tbody>
+  </table>
+
+  <h2>11 &middot; Demo Credentials &amp; Quick Start</h2>
+  <table>
+    <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Demo email</td><td><code>demo@chapterandco.com</code></td></tr>
+      <tr><td>Demo password</td><td><code>Demo1234!</code></td></tr>
+      <tr><td>Initial gift points</td><td>500 pts (worth &pound;5.00)</td></tr>
+      <tr><td>PostgreSQL</td><td><code>postgres://admin:admin@localhost:5432/chapter_and_co</code></td></tr>
+      <tr><td>Dev server</td><td><code>http://localhost:3000</code></td></tr>
+    </tbody>
+  </table>
+<pre>npm install
+cp .env.example .env      # add DATABASE_URL and NEXTAUTH_SECRET
+npm run db:migrate
+npm run db:seed
+npm run dev               # &rarr; http://localhost:3000</pre>
+
+  <h2>12 &middot; 3-Minute Video Structure</h2>
+  <table>
+    <thead><tr><th>Time</th><th>Scene</th><th>Focus</th></tr></thead>
+    <tbody>
+      <tr><td>0:00&ndash;0:30</td><td>Project intro</td><td>Chapter &amp; Co. objective, technology stack, IBM Bob as agentic IDE</td></tr>
+      <tr><td>0:30&ndash;1:10</td><td>IBM Bob prompts</td><td>Show master prompt, architecture output, AI-generated components</td></tr>
+      <tr><td>1:10&ndash;1:50</td><td>Working application</td><td>Homepage &rarr; catalogue &rarr; book detail &rarr; cart &rarr; checkout</td></tr>
+      <tr><td>1:50&ndash;2:20</td><td>Code &amp; testing</td><td>TypeScript, Prisma schema, Vitest tests passing, Playwright run</td></tr>
+      <tr><td>2:20&ndash;2:45</td><td>GitHub delivery</td><td>Feature branch, PR, architecture docs, OpenAPI spec</td></tr>
+      <tr><td>2:45&ndash;3:00</td><td>Conclusion</td><td>Results, lessons learned, agentic AI impact on delivery speed</td></tr>
+    </tbody>
+  </table>
+
+  <hr/>
+  <p style="font-size:13px;color:#57606a;"><strong>Delivery summary:</strong> 73 source files &middot; 17,067 lines &middot; 30 unit tests passing &middot; 12 E2E scenarios &middot; 30 seed books &middot; 10 categories &middot; OpenAPI 3 spec &middot; AI dev log &middot; Video production package</p>
+  <p style="font-size:13px;color:#57606a;"><strong>Agentic IDE:</strong> IBM Bob &middot; 8 structured prompts with human review after each phase &middot; No code generated without review and validation.</p>
+
+  <div class="doc-footer">Made with IBM Bob</div>
+</div>
+</body>
+</html>
