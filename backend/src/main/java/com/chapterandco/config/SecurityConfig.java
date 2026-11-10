@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/books/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/authors/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/recommendations/**").permitAll()
                 // Health/info probes (Kubernetes liveness/readiness); other actuator endpoints need auth
                 .requestMatchers("/actuator/health/**", "/actuator/info").permitAll()

@@ -43,6 +43,12 @@ public class OrderController {
         return ResponseEntity.ok(Map.of("orders", orderService.getOrders(user.getId())));
     }
 
+    @GetMapping("/orders/buy-again")
+    @Operation(summary = "Books from previous orders, for the Buy Again feature")
+    public ResponseEntity<Map<String, Object>> buyAgain(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(Map.of("books", orderService.getBuyAgain(user.getId())));
+    }
+
     @GetMapping("/orders/{id}")
     @Operation(summary = "Get order detail")
     public ResponseEntity<Map<String, Object>> getOrder(

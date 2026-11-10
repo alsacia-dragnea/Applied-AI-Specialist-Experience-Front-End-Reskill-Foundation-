@@ -83,10 +83,12 @@ See [`docs/DEVOPS.md`](../docs/DEVOPS.md): Dockerfile and docker-compose, GitHub
 |--------|------|------|-------------|
 | POST | `/api/v1/auth/register` | — | Register new user, returns JWT |
 | POST | `/api/v1/auth/login` | — | Login, returns JWT |
-| GET | `/api/v1/books` | — | List books (search, category, sort, page) |
+| GET | `/api/v1/books` | — | List books (search, category, author, sort, page) |
 | GET | `/api/v1/books/featured` | — | Featured books |
 | GET | `/api/v1/books/bestsellers` | — | Bestselling books |
-| GET | `/api/v1/books/{slug}` | — | Book detail by slug |
+| GET | `/api/v1/books/{slug}` | — | Book detail by slug + estimated delivery window (3–5 days) |
+| GET | `/api/v1/books/{slug}/related` | — | Related books (same primary category, max 4) |
+| GET | `/api/v1/authors` | — | All authors (browse by brand) |
 | GET | `/api/v1/categories` | — | All categories |
 | GET | `/api/v1/categories/{slug}` | — | Category by slug |
 | GET | `/api/v1/recommendations` | Optional | Personalized recommendations |
@@ -94,6 +96,7 @@ See [`docs/DEVOPS.md`](../docs/DEVOPS.md): Dockerfile and docker-compose, GitHub
 | POST | `/api/v1/addresses` | ✓ Bearer | Create address |
 | POST | `/api/v1/checkout` | ✓ Bearer | Place order (server-side pricing) |
 | GET | `/api/v1/orders` | ✓ Bearer | Order history |
+| GET | `/api/v1/orders/buy-again` | ✓ Bearer | Distinct books from past (non-cancelled) orders, for "Buy again" |
 | GET | `/api/v1/orders/{id}` | ✓ Bearer | Order detail |
 | PATCH | `/api/v1/orders/{id}` | ✓ Bearer | Cancel order (48-hr rule) |
 | GET | `/api/v1/gift-points` | ✓ Bearer | Gift points balance |
@@ -119,7 +122,7 @@ mvn test \
   -Dapp.jwt.expiration-ms=3600000
 ```
 
-### Test results (40 / 40 passing)
+### Test results (45 / 45 passing)
 
 | Suite | Tests | Type |
 |-------|-------|------|
@@ -130,7 +133,8 @@ mvn test \
 | `AuthControllerTest` | 6 | API (`@WebMvcTest` + MockMvc) |
 | `BookControllerTest` | 6 | API (`@WebMvcTest` + MockMvc) |
 | `ChapterAndCoApplicationTests` | 1 | Spring context load |
-| **Total** | **40** | **All passing** |
+| `CheckoutIntegrationTest` | 5 | Real persistence (H2, real entities): checkout, cancel, buy-again, related, author filter |
+| **Total** | **45** | **All passing** |
 
 ---
 
@@ -229,6 +233,6 @@ The Spring Boot module connects to the **same PostgreSQL database** as the Next.
 
 **Prompt:** "Create a Spring Boot backend module that reuses the existing PostgreSQL schema from the Next.js frontend capstone. Implement REST APIs for books, categories, auth, cart/checkout, orders, cancellation, gift points and recommendations. Add Spring Security with JWT, SpringDoc Swagger UI, and JUnit + Mockito tests."
 
-**Generated:** Full Maven project (pom.xml), 9 JPA entities, 6 repositories, 5 services, 5 controllers, 2 security classes, 2 config classes, 3 exception classes, 5 DTOs, 7 test classes — 40 tests, all passing.
+**Generated:** Full Maven project (pom.xml), 9 JPA entities, 6 repositories, 5 services, 5 controllers, 2 security classes, 2 config classes, 3 exception classes, 5 DTOs, 8 test classes — 45 tests, all passing.
 
 **Human review:** Confirmed table name mappings match Prisma schema. Added `ddl-auto=validate` to protect existing data. Fixed `@WebMvcTest` security context for controller tests. Added `@MockBean JwtTokenProvider` and `UserRepository` to controller test slices.

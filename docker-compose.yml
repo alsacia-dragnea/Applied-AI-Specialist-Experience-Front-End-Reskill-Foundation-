@@ -23,7 +23,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      DB_URL: jdbc:postgresql://db:5432/chapter_and_co
+      DB_URL: jdbc:postgresql://db:5432/chapter_and_co?stringtype=unspecified
       DB_USERNAME: ${DB_USERNAME:-admin}
       DB_PASSWORD: ${DB_PASSWORD:-admin}
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET (>= 32 bytes) in .env}

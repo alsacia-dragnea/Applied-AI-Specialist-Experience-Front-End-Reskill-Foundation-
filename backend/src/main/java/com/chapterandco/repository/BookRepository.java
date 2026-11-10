@@ -19,11 +19,25 @@ public interface BookRepository extends JpaRepository<Book, String> {
         LEFT JOIN b.categories c
         WHERE (CAST(:search AS string) IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                OR LOWER(a.name) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
-          AND (:categorySlug IS NULL OR c.slug = :categorySlug)
+          AND (CAST(:categorySlug AS string) IS NULL OR c.slug = :categorySlug)
+          AND (CAST(:authorId AS string) IS NULL OR b.authorId = :authorId)
         """)
     Page<Book> findWithFilters(
         @Param("search") String search,
         @Param("categorySlug") String categorySlug,
+        @Param("authorId") String authorId,
+        Pageable pageable
+    );
+
+    @Query("""
+        SELECT DISTINCT b FROM Book b
+        JOIN b.categories c
+        WHERE c.id = :categoryId AND b.id <> :bookId
+        ORDER BY b.id
+        """)
+    List<Book> findRelated(
+        @Param("categoryId") String categoryId,
+        @Param("bookId") String bookId,
         Pageable pageable
     );
 

@@ -1,279 +1,526 @@
-openapi: 3.0.3
+openapi: 3.0.1
 info:
-  title: Chapter & Co. API
-  description: REST API for the Chapter & Co. eCommerce Bookstore
+  title: Chapter & Co. Spring Boot API
+  description: REST API for the Chapter & Co. eCommerce bookstore (Spring Boot backend). Generated from
+    the running application via SpringDoc (GET /api-docs).
   version: 1.0.0
 servers:
-  - url: http://localhost:3000/api
-    description: Development server
-
-components:
-  securitySchemes:
-    sessionCookie:
-      type: apiKey
-      in: cookie
-      name: next-auth.session-token
-  schemas:
-    Book:
-      type: object
-      properties:
-        id: { type: string }
-        title: { type: string }
-        slug: { type: string }
-        price: { type: number }
-        compareAtPrice: { type: number, nullable: true }
-        coverUrl: { type: string, nullable: true }
-        bestseller: { type: boolean }
-        featured: { type: boolean }
-        stock: { type: integer }
-        author:
-          type: object
-          properties:
-            name: { type: string }
-    Order:
-      type: object
-      properties:
-        id: { type: string }
-        reference: { type: string }
-        status: { type: string, enum: [PENDING, CONFIRMED, PROCESSING, SHIPPED, DELIVERED, CANCELLED] }
-        subtotal: { type: number }
-        shippingCost: { type: number }
-        giftPointsUsed: { type: integer }
-        giftPointsDiscount: { type: number }
-        total: { type: number }
-        createdAt: { type: string, format: date-time }
-    Error:
-      type: object
-      properties:
-        error: { type: string }
-
+- url: http://localhost:8080
+  description: Local development
+security:
+- bearerAuth: []
+tags:
+- name: Addresses
+  description: Manage delivery addresses
+- name: Books
+  description: Browse and search books
+- name: Orders
+  description: Cart checkout and order management
+- name: Authors
+  description: Browse by author (brand)
+- name: Authentication
+  description: Register and login
+- name: Categories
+  description: Book categories
 paths:
-  /books:
-    get:
-      summary: List books
-      parameters:
-        - name: search
-          in: query
-          schema: { type: string }
-        - name: category
-          in: query
-          schema: { type: string }
-        - name: sort
-          in: query
-          schema:
-            type: string
-            enum: [price_asc, price_desc, newest, title_asc, bestseller]
-        - name: page
-          in: query
-          schema: { type: integer, default: 1 }
-        - name: limit
-          in: query
-          schema: { type: integer, default: 12, maximum: 48 }
-      responses:
-        '200':
-          description: Paginated list of books
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  books:
-                    type: array
-                    items: { $ref: '#/components/schemas/Book' }
-                  pagination:
-                    type: object
-                    properties:
-                      page: { type: integer }
-                      limit: { type: integer }
-                      total: { type: integer }
-                      pages: { type: integer }
-
-  /recommendations:
-    get:
-      summary: Get book recommendations
-      security:
-        - sessionCookie: []
-      responses:
-        '200':
-          description: Recommended books
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  books:
-                    type: array
-                    items: { $ref: '#/components/schemas/Book' }
-                  reason:
-                    type: string
-                    enum: [personalized, featured]
-
-  /addresses:
-    get:
-      summary: Get user addresses
-      security:
-        - sessionCookie: []
-      responses:
-        '200':
-          description: List of addresses
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema: { $ref: '#/components/schemas/Error' }
+  /api/v1/checkout:
     post:
-      summary: Create address
-      security:
-        - sessionCookie: []
+      tags:
+      - Orders
+      summary: Place a new order
+      operationId: checkout
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              required: [fullName, line1, city, postalCode, country]
-              properties:
-                fullName: { type: string }
-                line1: { type: string }
-                line2: { type: string }
-                city: { type: string }
-                state: { type: string }
-                postalCode: { type: string }
-                country: { type: string, minLength: 2, maxLength: 2 }
-                isDefault: { type: boolean }
-      responses:
-        '201':
-          description: Address created
-        '401':
-          description: Unauthorized
-
-  /gift-points:
-    get:
-      summary: Get gift points balance
-      security:
-        - sessionCookie: []
+              $ref: '#/components/schemas/CheckoutRequest'
+        required: true
       responses:
         '200':
-          description: Points balance
+          description: OK
           content:
-            application/json:
+            '*/*':
               schema:
                 type: object
-                properties:
-                  balance: { type: integer }
-
-  /checkout:
+                additionalProperties:
+                  type: object
+      security:
+      - bearerAuth: []
+  /api/v1/auth/register:
     post:
-      summary: Place an order
-      security:
-        - sessionCookie: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [addressId, paymentMethod, items]
-              properties:
-                addressId: { type: string }
-                paymentMethod: { type: string, enum: [DEMO_CARD, GIFT_POINTS] }
-                cardLast4: { type: string, maxLength: 4 }
-                giftPointsToRedeem: { type: integer, minimum: 0 }
-                items:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      bookId: { type: string }
-                      quantity: { type: integer, minimum: 1, maximum: 10 }
-      responses:
-        '201':
-          description: Order created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  orderId: { type: string }
-                  reference: { type: string }
-        '400':
-          description: Validation error
-        '401':
-          description: Unauthorized
-
-  /orders:
-    get:
-      summary: Get order history
-      security:
-        - sessionCookie: []
-      responses:
-        '200':
-          description: List of orders
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  orders:
-                    type: array
-                    items: { $ref: '#/components/schemas/Order' }
-
-  /orders/{id}:
-    get:
-      summary: Get order detail
-      security:
-        - sessionCookie: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string }
-      responses:
-        '200':
-          description: Order detail
-        '404':
-          description: Order not found
-    patch:
-      summary: Cancel an order
-      security:
-        - sessionCookie: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string }
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                action: { type: string, enum: [cancel] }
-      responses:
-        '200':
-          description: Order cancelled
-        '400':
-          description: Cannot cancel (past 48hrs or already cancelled)
-        '401':
-          description: Unauthorized
-        '404':
-          description: Order not found
-
-  /auth/register:
-    post:
+      tags:
+      - Authentication
       summary: Register a new user
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/v1/auth/login:
+    post:
+      tags:
+      - Authentication
+      summary: Login and receive JWT token
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/v1/addresses:
+    get:
+      tags:
+      - Addresses
+      summary: List user addresses
+      operationId: list_4
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - Addresses
+      summary: Create a delivery address
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security:
+      - bearerAuth: []
+  /api/v1/orders/{id}:
+    get:
+      tags:
+      - Orders
+      summary: Get order detail
+      operationId: getOrder
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security:
+      - bearerAuth: []
+    patch:
+      tags:
+      - Orders
+      summary: Cancel an order (within 48 hours)
+      operationId: cancel
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required: [name, email, password]
-              properties:
-                name: { type: string, minLength: 2 }
-                email: { type: string, format: email }
-                password: { type: string, minLength: 8 }
+              additionalProperties:
+                type: string
+        required: true
       responses:
-        '201':
-          description: User created
-        '409':
-          description: Email already in use
-        '422':
-          description: Validation error
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security:
+      - bearerAuth: []
+  /api/v1/recommendations:
+    get:
+      tags:
+      - Orders
+      summary: Get personalized book recommendations
+      operationId: recommendations
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security:
+      - bearerAuth: []
+  /api/v1/orders:
+    get:
+      tags:
+      - Orders
+      summary: Get order history
+      operationId: list
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security:
+      - bearerAuth: []
+  /api/v1/orders/buy-again:
+    get:
+      tags:
+      - Orders
+      summary: Books from previous orders, for the Buy Again feature
+      operationId: buyAgain
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security:
+      - bearerAuth: []
+  /api/v1/gift-points:
+    get:
+      tags:
+      - Orders
+      summary: Get gift points balance
+      operationId: giftPoints
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security:
+      - bearerAuth: []
+  /api/v1/categories:
+    get:
+      tags:
+      - Categories
+      summary: List all categories
+      operationId: list_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /api/v1/categories/{slug}:
+    get:
+      tags:
+      - Categories
+      summary: Get category by slug
+      operationId: getBySlug
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /api/v1/books:
+    get:
+      tags:
+      - Books
+      summary: List books with optional filters
+      operationId: list_2
+      parameters:
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: author
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 12
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /api/v1/books/{slug}:
+    get:
+      tags:
+      - Books
+      summary: Get book by slug, with estimated delivery window (3-5 days)
+      operationId: getBySlug_1
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /api/v1/books/{slug}/related:
+    get:
+      tags:
+      - Books
+      summary: Related books (same primary category)
+      operationId: related
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /api/v1/books/featured:
+    get:
+      tags:
+      - Books
+      summary: Get featured books
+      operationId: featured
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /api/v1/books/bestsellers:
+    get:
+      tags:
+      - Books
+      summary: Get bestselling books
+      operationId: bestsellers
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /api/v1/authors:
+    get:
+      tags:
+      - Authors
+      summary: List all authors, sorted by name
+      operationId: list_3
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+components:
+  schemas:
+    CheckoutItem:
+      required:
+      - bookId
+      type: object
+      properties:
+        bookId:
+          type: string
+        quantity:
+          maximum: 10
+          minimum: 1
+          type: integer
+          format: int32
+    CheckoutRequest:
+      required:
+      - addressId
+      - items
+      - paymentMethod
+      type: object
+      properties:
+        addressId:
+          type: string
+        paymentMethod:
+          type: string
+        cardLast4:
+          type: string
+        giftPointsToRedeem:
+          minimum: 0
+          type: integer
+          format: int32
+        items:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckoutItem'
+    RegisterRequest:
+      required:
+      - email
+      - name
+      - password
+      type: object
+      properties:
+        name:
+          maxLength: 100
+          minLength: 2
+          type: string
+        email:
+          type: string
+        password:
+          maxLength: 100
+          minLength: 8
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        userId:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+    LoginRequest:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    AddressRequest:
+      required:
+      - city
+      - country
+      - fullName
+      - line1
+      - postalCode
+      type: object
+      properties:
+        fullName:
+          type: string
+        line1:
+          type: string
+        line2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postalCode:
+          type: string
+        country:
+          maxLength: 2
+          minLength: 2
+          type: string
+        isDefault:
+          type: boolean
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

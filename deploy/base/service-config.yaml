@@ -17,5 +17,5 @@ kind: ConfigMap
 metadata:
   name: chapter-and-co-backend
 data:
-  DB_URL: jdbc:postgresql://postgres:5432/chapter_and_co
+  DB_URL: jdbc:postgresql://postgres:5432/chapter_and_co?stringtype=unspecified
   CORS_ALLOWED_ORIGINS: http://localhost:3000

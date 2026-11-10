@@ -29,6 +29,20 @@ public class OrderService {
         return orderRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }
 
+    /** "Buy again": distinct books from the user's past non-cancelled orders, most recent first. */
+    @Transactional(readOnly = true)
+    public List<Book> getBuyAgain(String userId) {
+        List<String> bookIds = orderRepository.findByUserIdOrderByCreatedAtDesc(userId).stream()
+                .filter(o -> o.getStatus() != OrderStatus.CANCELLED && o.getOrderItems() != null)
+                .flatMap(o -> o.getOrderItems().stream())
+                .map(OrderItem::getBookId)
+                .distinct()
+                .toList();
+        Map<String, Book> byId = bookRepository.findAllById(bookIds).stream()
+                .collect(Collectors.toMap(Book::getId, b -> b));
+        return bookIds.stream().map(byId::get).filter(java.util.Objects::nonNull).toList();
+    }
+
     public Order getOrder(String id, String userId) {
         return orderRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
@@ -36,6 +50,13 @@ public class OrderService {
 
     @Transactional
     public Order placeOrder(String userId, CheckoutRequest request) {
+        PaymentMethod paymentMethod;
+        try {
+            paymentMethod = PaymentMethod.valueOf(request.paymentMethod());
+        } catch (IllegalArgumentException e) {
+            throw new BusinessRuleException("Invalid payment method: " + request.paymentMethod());
+        }
+
         // Validate address ownership
         addressRepository.findByIdAndUserId(request.addressId(), userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
@@ -78,7 +99,7 @@ public class OrderService {
 
         BigDecimal total = subtotal.add(shippingCost).subtract(giftDiscount).max(BigDecimal.ZERO);
 
-        // Create order
+        // Create order (items and payment are persisted through cascade)
         Order order = Order.builder()
                 .id(UUID.randomUUID().toString())
                 .reference(UUID.randomUUID().toString().replace("-", "").substring(0, 12).toUpperCase())
@@ -91,15 +112,37 @@ public class OrderService {
                 .giftPointsDiscount(giftDiscount)
                 .total(total)
                 .build();
-        orderRepository.save(order);
 
         // Create order items and deduct stock
+        List<OrderItem> orderItems = new java.util.ArrayList<>();
         for (CheckoutRequest.CheckoutItem item : request.items()) {
             Book book = bookMap.get(item.bookId());
-            // (OrderItem persistence handled via cascade — simplified here)
+            orderItems.add(OrderItem.builder()
+                    .id(UUID.randomUUID().toString())
+                    .orderId(order.getId())
+                    .bookId(book.getId())
+                    .quantity(item.quantity())
+                    .unitPrice(book.getPrice())
+                    .totalPrice(book.getPrice().multiply(BigDecimal.valueOf(item.quantity())))
+                    .build());
             book.setStock(book.getStock() - item.quantity());
             bookRepository.save(book);
         }
+        order.setOrderItems(orderItems);
+
+        // Create payment record
+        Payment payment = Payment.builder()
+                .id(UUID.randomUUID().toString())
+                .orderId(order.getId())
+                .method(paymentMethod)
+                .status(PaymentStatus.COMPLETED)
+                .amount(total)
+                .demoCardLast4(request.cardLast4() != null ? request.cardLast4() : "4242")
+                .transactionRef("DEMO-" + System.currentTimeMillis())
+                .build();
+        order.setPayment(payment);
+
+        Order saved = orderRepository.save(order);
 
         // Award gift points (1 point per £1 spent)
         int pointsEarned = total.intValue();
@@ -126,21 +169,7 @@ public class OrderService {
                     .build());
         }
 
-        // Create payment record
-        Payment payment = Payment.builder()
-                .id(UUID.randomUUID().toString())
-                .orderId(order.getId())
-                .method(PaymentMethod.valueOf(request.paymentMethod()))
-                .status(PaymentStatus.COMPLETED)
-                .amount(total)
-                .demoCardLast4(request.cardLast4() != null ? request.cardLast4() : "4242")
-                .transactionRef("DEMO-" + System.currentTimeMillis())
-                .build();
-        // Payment is saved via cascade from Order, but we save directly here
-        // (mapped via order_id FK — saved separately)
-        order.setPayment(payment);
-
-        return order;
+        return saved;
     }
 
     @Transactional

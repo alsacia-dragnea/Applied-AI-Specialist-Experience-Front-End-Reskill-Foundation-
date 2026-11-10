@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 @RestController
@@ -24,11 +25,12 @@ public class BookController {
     public ResponseEntity<Map<String, Object>> list(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String category,
+            @RequestParam(required = false) String author,
             @RequestParam(required = false) String sort,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int limit) {
 
-        Page<Book> result = bookService.findBooks(search, category, sort, page, limit);
+        Page<Book> result = bookService.findBooks(search, category, author, sort, page, limit);
         return ResponseEntity.ok(Map.of(
                 "books", result.getContent(),
                 "pagination", Map.of(
@@ -53,8 +55,18 @@ public class BookController {
     }
 
     @GetMapping("/{slug}")
-    @Operation(summary = "Get book by slug")
+    @Operation(summary = "Get book by slug, with estimated delivery window (3-5 days)")
     public ResponseEntity<Map<String, Object>> getBySlug(@PathVariable String slug) {
-        return ResponseEntity.ok(Map.of("book", bookService.findBySlug(slug)));
+        LocalDate today = LocalDate.now();
+        return ResponseEntity.ok(Map.of(
+                "book", bookService.findBySlug(slug),
+                "estimatedDelivery", Map.of("from", today.plusDays(3).toString(), "to", today.plusDays(5).toString())
+        ));
+    }
+
+    @GetMapping("/{slug}/related")
+    @Operation(summary = "Related books (same primary category)")
+    public ResponseEntity<Map<String, Object>> related(@PathVariable String slug) {
+        return ResponseEntity.ok(Map.of("books", bookService.findRelated(slug)));
     }
 }

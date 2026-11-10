@@ -48,7 +48,7 @@ class BookControllerTest {
     @DisplayName("GET /api/v1/books — 200 with paginated books list")
     void listBooks_returns200() throws Exception {
         List<Book> books = List.of(makeBook("b-1", "Clean Code"), makeBook("b-2", "Pragmatic Programmer"));
-        when(bookService.findBooks(any(), any(), any(), anyInt(), anyInt()))
+        when(bookService.findBooks(any(), any(), any(), any(), anyInt(), anyInt()))
                 .thenReturn(new PageImpl<>(books, PageRequest.of(0, 12), 2));
 
         mockMvc.perform(get("/api/v1/books"))
@@ -62,7 +62,7 @@ class BookControllerTest {
     @DisplayName("GET /api/v1/books?search=clean — filters by search term")
     void listBooks_withSearch_returns200() throws Exception {
         List<Book> books = List.of(makeBook("b-1", "Clean Code"));
-        when(bookService.findBooks(eq("clean"), any(), any(), anyInt(), anyInt()))
+        when(bookService.findBooks(eq("clean"), any(), any(), any(), anyInt(), anyInt()))
                 .thenReturn(new PageImpl<>(books, PageRequest.of(0, 12), 1));
 
         mockMvc.perform(get("/api/v1/books?search=clean"))
