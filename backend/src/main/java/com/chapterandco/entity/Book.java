@@ -1,5 +1,6 @@
 package com.chapterandco.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "books")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Book {
 
@@ -21,23 +23,23 @@ public class Book {
     @Column(unique = true, nullable = false)
     private String slug;
 
-    @Column(name = "author_id", nullable = false)
+    @Column(name = "authorId", nullable = false)
     private String authorId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", insertable = false, updatable = false)
+    @JoinColumn(name = "authorId", insertable = false, updatable = false)
     private Author author;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
-    @Column(name = "cover_url")
+    @Column(name = "coverUrl")
     private String coverUrl;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(name = "compare_at_price", precision = 10, scale = 2)
+    @Column(name = "compareAtPrice", precision = 10, scale = 2)
     private BigDecimal compareAtPrice;
 
     @Column(unique = true)
@@ -45,7 +47,7 @@ public class Book {
 
     private String publisher;
 
-    @Column(name = "published_at")
+    @Column(name = "publishedAt")
     private Instant publishedAt;
 
     private Integer pages;
@@ -62,17 +64,17 @@ public class Book {
     @Column(nullable = false)
     private Boolean bestseller = false;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "createdAt", nullable = false)
     private Instant createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updatedAt", nullable = false)
     private Instant updatedAt;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "book_categories",
-        joinColumns = @JoinColumn(name = "book_id"),
-        inverseJoinColumns = @JoinColumn(name = "category_id")
+        joinColumns = @JoinColumn(name = "bookId"),
+        inverseJoinColumns = @JoinColumn(name = "categoryId")
     )
     private List<Category> categories;
 

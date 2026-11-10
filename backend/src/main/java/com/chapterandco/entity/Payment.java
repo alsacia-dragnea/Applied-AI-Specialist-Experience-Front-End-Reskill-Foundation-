@@ -1,5 +1,7 @@
 package com.chapterandco.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -7,6 +9,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "payments")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Payment {
 
@@ -14,11 +17,12 @@ public class Payment {
     @Column(length = 36)
     private String id;
 
-    @Column(name = "order_id", unique = true, nullable = false)
+    @Column(name = "orderId", unique = true, nullable = false)
     private String orderId;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+    @JoinColumn(name = "orderId", insertable = false, updatable = false)
     private Order order;
 
     @Enumerated(EnumType.STRING)
@@ -32,16 +36,16 @@ public class Payment {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
-    @Column(name = "demo_card_last4", length = 4)
+    @Column(name = "demoCardLast4", length = 4)
     private String demoCardLast4;
 
-    @Column(name = "transaction_ref", unique = true)
+    @Column(name = "transactionRef", unique = true)
     private String transactionRef;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "createdAt", nullable = false)
     private Instant createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updatedAt", nullable = false)
     private Instant updatedAt;
 
     @PrePersist

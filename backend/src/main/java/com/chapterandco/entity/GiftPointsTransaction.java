@@ -1,11 +1,14 @@
 package com.chapterandco.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.Instant;
 
 @Entity
 @Table(name = "gift_points_transactions")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class GiftPointsTransaction {
 
@@ -13,18 +16,20 @@ public class GiftPointsTransaction {
     @Column(length = 36)
     private String id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "userId", nullable = false)
     private String userId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "userId", insertable = false, updatable = false)
     private User user;
 
-    @Column(name = "order_id")
+    @Column(name = "orderId")
     private String orderId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+    @JoinColumn(name = "orderId", insertable = false, updatable = false)
     private Order order;
 
     @Enumerated(EnumType.STRING)
@@ -36,7 +41,7 @@ public class GiftPointsTransaction {
 
     private String description;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "createdAt", nullable = false)
     private Instant createdAt;
 
     @PrePersist

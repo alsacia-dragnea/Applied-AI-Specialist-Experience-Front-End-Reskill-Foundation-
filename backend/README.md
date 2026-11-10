@@ -57,14 +57,23 @@ OpenAPI JSON: `http://localhost:8080/api-docs`
 
 All configuration is in [`src/main/resources/application.properties`](src/main/resources/application.properties).
 
-| Property | Default | Description |
-|----------|---------|-------------|
-| `spring.datasource.url` | `jdbc:postgresql://localhost:5432/chapter_and_co` | Shared DB |
-| `spring.datasource.username` | `admin` | PostgreSQL username |
-| `spring.datasource.password` | `admin` | PostgreSQL password |
-| `app.jwt.secret` | (see file) | Change in production |
-| `app.jwt.expiration-ms` | `86400000` | 24 hours |
-| `server.port` | `8080` | Spring Boot port |
+Every value can be overridden through an environment variable (see [`docs/DEVOPS.md`](../docs/DEVOPS.md)).
+
+| Property | Env var | Default | Description |
+|----------|---------|---------|-------------|
+| `spring.datasource.url` | `DB_URL` | `jdbc:postgresql://localhost:5432/chapter_and_co` | Shared DB |
+| `spring.datasource.username` | `DB_USERNAME` | `admin` | PostgreSQL username |
+| `spring.datasource.password` | `DB_PASSWORD` | `admin` | PostgreSQL password |
+| `app.jwt.secret` | `JWT_SECRET` | (dev placeholder) | **Must be set in production** |
+| `app.jwt.expiration-ms` | `JWT_EXPIRATION_MS` | `86400000` | 24 hours |
+| `app.cors.allowed-origins` | `CORS_ALLOWED_ORIGINS` | `http://localhost:3000` | Comma-separated origins |
+| `server.port` | `SERVER_PORT` | `8080` | Spring Boot port |
+
+Health probes: `/actuator/health/liveness` and `/actuator/health/readiness`.
+
+## Containers, CI/CD and cloud deployment
+
+See [`docs/DEVOPS.md`](../docs/DEVOPS.md): Dockerfile and docker-compose, GitHub Actions (CI, CodeQL, Trivy, Gitleaks, ZAP), Kustomize/ArgoCD GitOps manifests, Terraform IaC, and the log triage script.
 
 ---
 

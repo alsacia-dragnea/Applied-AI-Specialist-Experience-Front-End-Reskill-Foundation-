@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter &amp; Co. — Cloud FullStack Capstone Documentation</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #1f2328;
+    background: #ffffff;
+  }
+  .page { max-width: 760px; margin: 0 auto; padding: 48px 24px 64px; }
+
+  .cover {
+    background: #1a3a4a;
+    color: #f0f6fc;
+    border-radius: 8px;
+    padding: 40px 36px 32px;
+    margin-bottom: 40px;
+  }
+  .cover-label {
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #7ec8e3;
+    margin-bottom: 10px;
+  }
+  .cover h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    margin-bottom: 8px;
+  }
+  .cover-sub {
+    font-size: 14px;
+    color: #b0cfe0;
+    margin-bottom: 20px;
+    max-width: 540px;
+  }
+  .cover-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    background: rgba(126,200,227,.15);
+    border: 1px solid rgba(126,200,227,.3);
+    color: #a8d8ea;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: .04em;
+  }
+
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a3a4a;
+    margin: 36px 0 14px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f2328;
+    margin: 20px 0 6px;
+  }
+  p { margin-bottom: 10px; color: #374151; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  th {
+    background: #f7f8fa;
+    text-align: left;
+    padding: 7px 10px;
+    font-weight: 600;
+    color: #57606a;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  td { padding: 7px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  code {
+    font-family: "SF Mono", "Consolas", "Liberation Mono", monospace;
+    font-size: 12px;
+    background: #f7f8fa;
+    padding: 2px 5px;
+    border-radius: 3px;
+    color: #1a3a4a;
+  }
+
+  pre {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: "SF Mono", "Consolas", monospace;
+    font-size: 12px;
+    line-height: 1.55;
+    overflow-x: auto;
+    margin-bottom: 16px;
+    color: #1a3a4a;
+  }
+
+  .phases { display: grid; gap: 10px; margin-bottom: 8px; }
+  .phase {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-left: 3px solid #7ec8e3;
+    border-radius: 6px;
+    padding: 10px 14px;
+  }
+  .phase-title { font-weight: 700; font-size: 13px; color: #1a3a4a; }
+  .phase-desc { font-size: 12px; color: #57606a; margin-top: 2px; }
+
+  .ai-entry {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .ai-header {
+    background: #f7f8fa;
+    padding: 8px 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .ai-num {
+    background: #1a3a4a;
+    color: #f0f6fc;
+    font-size: 10px;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .ai-title { font-weight: 700; font-size: 13px; }
+  .ai-body { padding: 10px 14px; font-size: 13px; }
+  .ai-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: #57606a; font-weight: 600; margin-top: 6px; }
+  .ai-value { color: #374151; }
+
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 12px;
+    letter-spacing: .04em;
+  }
+  .badge-green { background: #dcfce7; color: #166534; }
+  .badge-amber { background: #fef9c3; color: #854d0e; }
+  .badge-blue  { background: #dbeafe; color: #1e40af; }
+  .badge-teal  { background: #ccf2f4; color: #0e6674; }
+
+  .layers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .layer-card {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+  .layer-name { font-size: 10px; color: #7ec8e3; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .layer-tech { font-weight: 700; font-size: 13px; color: #1f2328; }
+  .layer-desc { font-size: 12px; color: #57606a; margin-top: 3px; }
+
+  hr { border: none; border-top: 1px solid #e5e7eb; margin: 32px 0; }
+  .doc-footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    font-size: 12px;
+    color: #57606a;
+  }
+  @media (max-width: 600px) {
+    .layers { grid-template-columns: 1fr; }
+    .cover { padding: 24px 20px; }
+    .page { padding: 24px 16px 48px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Cover -->
+  <div class="cover">
+    <div class="cover-label">AI Specialist Cloud FullStack &mdash; Capstone Project</div>
+    <h1>Chapter &amp; Co. &mdash; Spring Boot Backend</h1>
+    <p class="cover-sub">Java 21 Spring Boot backend module added to the existing Chapter &amp; Co. eCommerce bookstore, reusing the same PostgreSQL database, generated and refined with IBM Bob.</p>
+    <div class="cover-pills">
+      <span class="pill">Java 21</span>
+      <span class="pill">Spring Boot 3.3.5</span>
+      <span class="pill">Spring Security + JWT</span>
+      <span class="pill">Spring Data JPA</span>
+      <span class="pill">PostgreSQL</span>
+      <span class="pill">Maven</span>
+      <span class="pill">SpringDoc / Swagger UI</span>
+      <span class="pill">JUnit 5 + Mockito</span>
+      <span class="pill">IBM Bob</span>
+      <span class="pill">GitHub</span>
+    </div>
+  </div>
+
+  <!-- 1. Technology Stack -->
+  <h2>1 &middot; Technology Stack</h2>
+  <div class="layers">
+    <div class="layer-card">
+      <div class="layer-name">Language</div>
+      <div class="layer-tech">Java 21</div>
+      <div class="layer-desc">LTS release, records, pattern matching, virtual threads</div>
+    </div>
+    <div class="layer-card">
+      <div class="layer-name">Framework</div>
+      <div class="layer-tech">Spring Boot 3.3.5</div>
+      <div class="layer-desc">Spring Web, Data JPA, Security, Validation</div>
+    </div>
+    <div class="layer-card">
+      <div class="layer-name">Database</div>
+      <div class="layer-tech">PostgreSQL 17 (shared)</div>
+      <div class="layer-desc">Same DB as Next.js frontend &mdash; no schema changes</div>
+    </div>
+    <div class="layer-card">
+      <div class="layer-name">ORM</div>
+      <div class="layer-tech">Spring Data JPA + Hibernate</div>
+      <div class="layer-desc">9 entities mapped to existing Prisma tables</div>
+    </div>
+    <div class="layer-card">
+      <div class="layer-name">Security</div>
+      <div class="layer-tech">Spring Security + JWT</div>
+      <div class="layer-desc">Stateless, jjwt 0.12.6, BCrypt cost 12</div>
+    </div>
+    <div class="layer-card">
+      <div class="layer-name">API Docs</div>
+      <div class="layer-tech">SpringDoc OpenAPI 2.6</div>
+      <div class="layer-desc">Auto-generated Swagger UI at /swagger-ui.html</div>
+    </div>
+    <div class="layer-card">
+      <div class="layer-name">Build</div>
+      <div class="layer-tech">Maven 3.9+</div>
+      <div class="layer-desc">Standard Maven project in backend/ sub-directory</div>
+    </div>
+    <div class="layer-card">
+      <div class="layer-name">Tests</div>
+      <div class="layer-tech">JUnit 5 + Mockito + Spring Boot Test</div>
+      <div class="layer-desc">40 tests &mdash; unit, persistence, API, context</div>
+    </div>
+  </div>
+
+  <!-- 2. Architecture -->
+  <h2>2 &middot; Architecture</h2>
+  <h3>Two-backend design</h3>
+  <p>The Spring Boot backend is a new <strong>self-contained Maven module</strong> inside the existing repository. Both backends run simultaneously without conflict:</p>
+  <table>
+    <thead><tr><th>Backend</th><th>Port</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>Next.js (Front-End Capstone)</td><td>3000</td><td>React frontend + Node.js Route Handlers (unchanged)</td></tr>
+      <tr><td>Spring Boot (Cloud FullStack Capstone)</td><td>8080</td><td>Java REST API, independently testable</td></tr>
+      <tr><td colspan="3" style="color:#57606a;font-size:12px;">Both connect to the same PostgreSQL database: <code>chapter_and_co</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Data flow</h3>
+<pre>Browser &rarr; Next.js (port 3000) &rarr; Prisma &rarr; PostgreSQL chapter_and_co
+        &rarr; Spring Boot (port 8080) &rarr; Spring Data JPA &rarr; PostgreSQL chapter_and_co
+        &rarr; (same tables, ddl-auto=validate, no schema changes)</pre>
+
+  <h3>Module structure</h3>
+<pre>chapter-and-co/
+&boxur;&boxh;&boxh; backend/                              &larr; NEW (Cloud FullStack)
+    &boxur;&boxh;&boxh; pom.xml                           Java 21, Spring Boot 3.3.5
+    &boxur;&boxh;&boxh; src/main/java/com/chapterandco/
+    &boxb;   &boxur;&boxh;&boxh; ChapterAndCoApplication.java
+    &boxb;   &boxur;&boxh;&boxh; config/
+    &boxb;   &boxb;   &boxur;&boxh;&boxh; SecurityConfig.java        CSRF off, CORS, JWT filter, route rules
+    &boxb;   &boxb;   &boxur;&boxh;&boxh; OpenApiConfig.java         SpringDoc + bearerAuth scheme
+    &boxb;   &boxur;&boxh;&boxh; controller/
+    &boxb;   &boxb;   &boxur;&boxh;&boxh; AuthController.java        POST /api/v1/auth/register|login
+    &boxb;   &boxb;   &boxur;&boxh;&boxh; BookController.java        GET  /api/v1/books/**
+    &boxb;   &boxb;   &boxur;&boxh;&boxh; CategoryController.java    GET  /api/v1/categories/**
+    &boxb;   &boxb;   &boxur;&boxh;&boxh; AddressController.java     GET|POST /api/v1/addresses
+    &boxb;   &boxb;   &boxur;&boxh;&boxh; OrderController.java       POST checkout, GET|PATCH orders, gift-points, recommendations
+    &boxb;   &boxur;&boxh;&boxh; dto/                       RegisterRequest, LoginRequest, AuthResponse, CheckoutRequest, AddressRequest
+    &boxb;   &boxur;&boxh;&boxh; entity/                    9 JPA entities mapped to existing Prisma tables
+    &boxb;   &boxur;&boxh;&boxh; exception/                 ResourceNotFoundException, BusinessRuleException, GlobalExceptionHandler
+    &boxb;   &boxur;&boxh;&boxh; repository/                6 Spring Data JPA repositories
+    &boxb;   &boxur;&boxh;&boxh; security/                  JwtTokenProvider, JwtAuthenticationFilter
+    &boxb;   &boxur;&boxh;&boxh; service/                   AuthService, BookService, AddressService, OrderService, RecommendationService
+    &boxur;&boxh;&boxh; src/test/java/com/chapterandco/
+    &boxb;   &boxur;&boxh;&boxh; controller/                AuthControllerTest, BookControllerTest (@WebMvcTest)
+    &boxb;   &boxur;&boxh;&boxh; repository/                UserRepositoryTest (@DataJpaTest)
+    &boxb;   &boxur;&boxh;&boxh; service/                   AuthServiceTest, JwtTokenProviderTest, OrderServiceTest
+    &boxb;   &boxur;&boxh;&boxh; ChapterAndCoApplicationTests.java
+    &boxur;&boxh;&boxh; src/main/resources/application.properties
+    &boxur;&boxh;&boxh; src/test/resources/application-test.properties
+    &boxur;&boxh;&boxh; README.md
+&boxur;&boxh;&boxh; src/                                  &larr; EXISTING (Front-End Capstone, unchanged)
+&boxur;&boxh;&boxh; prisma/                               &larr; EXISTING (shared schema)</pre>
+
+  <!-- 3. Data Model -->
+  <h2>3 &middot; JPA Entities &rarr; PostgreSQL Tables</h2>
+  <p>All JPA entities are mapped to the <strong>existing tables created by Prisma migrations</strong>. <code>ddl-auto=validate</code> ensures Hibernate validates the schema but never modifies it.</p>
+  <table>
+    <thead><tr><th>JPA Entity</th><th>PostgreSQL Table</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>User</code></td><td><code>users</code></td><td>id (CUID), email (unique), password (bcrypt), createdAt, updatedAt</td></tr>
+      <tr><td><code>Book</code></td><td><code>books</code></td><td>ManyToMany categories, ManyToOne author, price Decimal(10,2)</td></tr>
+      <tr><td><code>Author</code></td><td><code>authors</code></td><td>OneToMany books</td></tr>
+      <tr><td><code>Category</code></td><td><code>categories</code></td><td>ManyToMany books via book_categories join table</td></tr>
+      <tr><td><code>Address</code></td><td><code>addresses</code></td><td>ManyToOne user, fullName, line1, city, postalCode, country</td></tr>
+      <tr><td><code>Order</code></td><td><code>orders</code></td><td>status enum, subtotal, shippingCost, giftPointsUsed, total</td></tr>
+      <tr><td><code>OrderItem</code></td><td><code>order_items</code></td><td>unitPrice captured at time of order</td></tr>
+      <tr><td><code>Payment</code></td><td><code>payments</code></td><td>method enum, status enum, demoCardLast4 — no real card data</td></tr>
+      <tr><td><code>GiftPointsTransaction</code></td><td><code>gift_points_transactions</code></td><td>type: EARNED | REDEEMED | REFUNDED, full audit trail</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 4. API Endpoints -->
+  <h2>4 &middot; REST API Endpoints</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Path</th><th>Auth</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/v1/auth/register</code></td><td>&mdash;</td><td>Register user, returns JWT token</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/v1/auth/login</code></td><td>&mdash;</td><td>Login, returns JWT token</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/v1/books</code></td><td>&mdash;</td><td>List books &mdash; search, category, sort, page query params</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/v1/books/featured</code></td><td>&mdash;</td><td>Featured books</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/v1/books/bestsellers</code></td><td>&mdash;</td><td>Bestselling books</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/v1/books/{slug}</code></td><td>&mdash;</td><td>Book detail by slug &mdash; 404 if not found</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/v1/categories</code></td><td>&mdash;</td><td>All categories</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/v1/categories/{slug}</code></td><td>&mdash;</td><td>Category by slug</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/v1/recommendations</code></td><td>Optional</td><td>Personalized recommendations (falls back to featured)</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/v1/addresses</code></td><td>&#10003; Bearer</td><td>List user addresses</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/v1/addresses</code></td><td>&#10003; Bearer</td><td>Create delivery address</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/v1/checkout</code></td><td>&#10003; Bearer</td><td>Place order: server-side pricing, stock, gift points, transaction</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/v1/orders</code></td><td>&#10003; Bearer</td><td>Order history for authenticated user</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/v1/orders/{id}</code></td><td>&#10003; Bearer</td><td>Order detail with items and payment</td></tr>
+      <tr><td><span class="badge badge-amber">PATCH</span></td><td><code>/api/v1/orders/{id}</code></td><td>&#10003; Bearer</td><td>Cancel order &mdash; 48-hr rule enforced server-side</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/v1/gift-points</code></td><td>&#10003; Bearer</td><td>Gift points balance</td></tr>
+    </tbody>
+  </table>
+  <p>Swagger UI: <code>http://localhost:8080/swagger-ui.html</code> &mdash; all endpoints documented with schemas and try-it-out. Protected endpoints require <code>Authorization: Bearer &lt;JWT&gt;</code>.</p>
+
+  <!-- 5. Security -->
+  <h2>5 &middot; Security</h2>
+  <table>
+    <thead><tr><th>Concern</th><th>Implementation</th></tr></thead>
+    <tbody>
+      <tr><td>Authentication</td><td>Stateless JWT via <code>JwtTokenProvider</code> (jjwt 0.12.6, HS256)</td></tr>
+      <tr><td>Password hashing</td><td>BCrypt, cost factor 12</td></tr>
+      <tr><td>Authorization</td><td><code>JwtAuthenticationFilter</code> sets <code>SecurityContext</code> per request</td></tr>
+      <tr><td>Server-side pricing</td><td><code>OrderService.placeOrder()</code> fetches prices from DB &mdash; client values ignored</td></tr>
+      <tr><td>IDOR prevention</td><td>All user-scoped queries filter by <code>userId</code> from JWT</td></tr>
+      <tr><td>Cancellation abuse</td><td>48-hour window enforced in <code>OrderService.cancelOrder()</code> &mdash; <code>400 Bad Request</code> if expired</td></tr>
+      <tr><td>Input validation</td><td>Jakarta Bean Validation on all DTOs (<code>@NotBlank</code>, <code>@Email</code>, <code>@Size</code>, <code>@Min</code>/<code>@Max</code>)</td></tr>
+      <tr><td>Payment data</td><td>No real card data &mdash; demo flow only, <code>demoCardLast4</code> field clearly labelled</td></tr>
+      <tr><td>CORS</td><td>Configured for <code>http://localhost:3000</code> (Next.js frontend)</td></tr>
+      <tr><td>Secrets</td><td>All via <code>application.properties</code> / environment variables</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 6. AI Dev Log -->
+  <h2>6 &middot; AI Development Log (IBM Bob)</h2>
+  <p>The entire Spring Boot backend was generated interactively with IBM Bob. Human review was performed after each generation step before proceeding.</p>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">1</span><span class="ai-title">Gap Analysis &amp; Architecture</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Inspect the existing repository and perform a gap analysis against the Cloud FullStack capstone requirements. Identify which requirements are satisfied and which require a Java Spring Boot backend."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value">Full gap analysis: existing project has PostgreSQL schema, business logic, OpenAPI spec, tests, auth and GitHub. Missing: Java code, Spring Boot, Spring Data JPA, Spring Security, Maven, JUnit/Mockito, SpringDoc.</div>
+      <div class="ai-label">Decision</div>
+      <div class="ai-value">New <code>backend/</code> Maven module. Reuse same PostgreSQL DB (<code>ddl-auto=validate</code>). No changes to existing Next.js frontend or Prisma schema.</div>
+    </div>
+  </div>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">2</span><span class="ai-title">Maven POM &amp; Project Scaffold</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Create a Spring Boot 3.3.5 Maven project with Java 21, Spring Web, Spring Data JPA, Spring Security, PostgreSQL, jjwt, SpringDoc, Lombok, JUnit 5, Mockito, H2 for test slices."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value"><code>pom.xml</code> with all dependencies, <code>application.properties</code>, <code>application-test.properties</code>, main application class.</div>
+      <div class="ai-label">Human Review</div>
+      <div class="ai-value">Confirmed Java 21 available via Homebrew. Verified dependency versions are mutually compatible.</div>
+    </div>
+  </div>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">3</span><span class="ai-title">JPA Entities</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Generate JPA entities mapped to the existing Prisma PostgreSQL tables. Use the exact same column names and constraints. Set ddl-auto=validate."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value">9 entities: User, Book, Author, Category, Address, Order, OrderItem, Payment, GiftPointsTransaction + 4 enums (OrderStatus, PaymentMethod, PaymentStatus, GiftPointsType).</div>
+      <div class="ai-label">Human Review</div>
+      <div class="ai-value">Verified all <code>@Table(name=)</code> and <code>@Column(name=)</code> annotations match Prisma schema exactly. Confirmed Decimal(10,2) precision for price fields.</div>
+    </div>
+  </div>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">4</span><span class="ai-title">Spring Security + JWT</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Add Spring Security in stateless mode with JWT. Generate JwtTokenProvider (generate/validate/parse), JwtAuthenticationFilter (OncePerRequestFilter), SecurityConfig (CSRF off, CORS for port 3000, public/protected route rules)."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value"><code>JwtTokenProvider.java</code>, <code>JwtAuthenticationFilter.java</code>, <code>SecurityConfig.java</code>, <code>OpenApiConfig.java</code> with bearerAuth scheme.</div>
+      <div class="ai-label">Human Review</div>
+      <div class="ai-value">Confirmed CSRF is disabled (stateless API). Verified public routes include <code>/api/v1/auth/**</code>, <code>GET /api/v1/books/**</code>, Swagger UI paths.</div>
+    </div>
+  </div>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">5</span><span class="ai-title">Services &amp; Controllers</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Generate services and REST controllers for books, categories, auth, addresses, checkout (server-side pricing), orders (48-hr cancellation, stock restoration, gift points refund), and recommendations."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value">5 services, 5 controllers, 5 DTOs (Java records with Bean Validation), <code>GlobalExceptionHandler</code> (@RestControllerAdvice).</div>
+      <div class="ai-label">Human Review</div>
+      <div class="ai-value">Confirmed <code>OrderService.placeOrder()</code> fetches prices from DB (not from client). Confirmed 48-hr check: <code>hoursSinceOrder > 48 &rarr; 400</code>. Confirmed gift points balance computed from transaction log.</div>
+    </div>
+  </div>
+
+  <div class="ai-entry">
+    <div class="ai-header"><span class="ai-num">6</span><span class="ai-title">JUnit + Mockito Tests</span></div>
+    <div class="ai-body">
+      <div class="ai-label">Prompt</div>
+      <div class="ai-value">"Generate JUnit 5 + Mockito unit tests for AuthService, OrderService, JwtTokenProvider. Generate @DataJpaTest persistence tests for UserRepository. Generate @WebMvcTest API tests for AuthController and BookController."</div>
+      <div class="ai-label">Generated</div>
+      <div class="ai-value">7 test classes, 40 test methods covering: register/login, 48-hr cancellation, cancellation past deadline, already-cancelled rejection, gift points balance, stock check, IDOR prevention, DB persistence, HTTP status codes, JSON assertions.</div>
+      <div class="ai-label">Refinement</div>
+      <div class="ai-value">Fixed <code>@WebMvcTest</code> context error: added <code>@Import({SecurityConfig.class, JwtAuthenticationFilter.class})</code> and <code>@MockBean JwtTokenProvider</code> + <code>UserRepository</code> to load the security filter chain in slice tests. All 40 tests pass after fix.</div>
+    </div>
+  </div>
+
+  <!-- 7. Test Results -->
+  <h2>7 &middot; Test Results — 40 / 40 Passing</h2>
+  <table>
+    <thead><tr><th>Test Suite</th><th>Tests</th><th>Type</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><code>AuthServiceTest</code></td><td>5 &mdash; register, duplicate email, login, wrong password, unknown email</td><td>Unit (Mockito)</td><td><span class="badge badge-green">&#10003; PASS</span></td></tr>
+      <tr><td><code>OrderServiceTest</code></td><td>11 &mdash; getOrder, IDOR prevention, cancel within 48hrs, cancel after 48hrs, already-cancelled, gift points balance, empty balance, address not found, insufficient stock, insufficient gift points, checkout flow</td><td>Unit (Mockito)</td><td><span class="badge badge-green">&#10003; PASS</span></td></tr>
+      <tr><td><code>JwtTokenProviderTest</code></td><td>6 &mdash; generate, validate valid, validate tampered, validate empty, getUserId, getEmail</td><td>Unit</td><td><span class="badge badge-green">&#10003; PASS</span></td></tr>
+      <tr><td><code>UserRepositoryTest</code></td><td>5 &mdash; save + findByEmail, existsByEmail true, existsByEmail false, findByEmail empty, timestamps auto-set</td><td>DB Persistence (@DataJpaTest)</td><td><span class="badge badge-green">&#10003; PASS</span></td></tr>
+      <tr><td><code>AuthControllerTest</code></td><td>6 &mdash; register 201, invalid email 422, short password 422, login 200, missing body 422, wrong password 400</td><td>API (@WebMvcTest + MockMvc)</td><td><span class="badge badge-green">&#10003; PASS</span></td></tr>
+      <tr><td><code>BookControllerTest</code></td><td>6 &mdash; list 200, search 200, getBySlug 200, getBySlug 404, featured 200, bestsellers 200</td><td>API (@WebMvcTest + MockMvc)</td><td><span class="badge badge-green">&#10003; PASS</span></td></tr>
+      <tr><td><code>ChapterAndCoApplicationTests</code></td><td>1 &mdash; Spring context loads</td><td>Integration</td><td><span class="badge badge-green">&#10003; PASS</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Test command</h3>
+<pre>cd backend
+export JAVA_HOME=/opt/homebrew/opt/openjdk@21
+mvn test \
+  -Dspring.datasource.url=jdbc:h2:mem:testdb \
+  -Dspring.datasource.driver-class-name=org.h2.Driver \
+  -Dspring.datasource.username=sa \
+  -Dspring.datasource.password= \
+  -Dspring.jpa.hibernate.ddl-auto=create-drop \
+  -Dspring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect \
+  -Dapp.jwt.secret=test-secret-key-for-unit-tests-only-256bits-padding00 \
+  -Dapp.jwt.expiration-ms=3600000
+
+# Result: Tests run: 40, Failures: 0, Errors: 0 &mdash; BUILD SUCCESS</pre>
+
+  <!-- 8. Gap Analysis -->
+  <h2>8 &middot; Gap Analysis — Cloud FullStack Requirements</h2>
+  <table>
+    <thead><tr><th>Requirement</th><th>Source</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Java 21 Spring Boot backend</td><td><code>backend/pom.xml</code>, Spring Boot 3.3.5</td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>Spring Web REST controllers</td><td>5 controllers, 16 endpoints at <code>/api/v1/</code></td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>Spring Data JPA repositories</td><td>6 repositories, custom <code>@Query</code></td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>Spring Security + JWT</td><td>Stateless, <code>JwtAuthenticationFilter</code>, BCrypt</td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>PostgreSQL integration</td><td>Shared DB, <code>ddl-auto=validate</code></td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>Maven build</td><td><code>mvn clean package</code>, <code>mvn spring-boot:run</code></td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>OpenAPI / Swagger UI</td><td>SpringDoc 2.6, <code>/swagger-ui.html</code></td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>JUnit + Mockito unit tests</td><td>AuthServiceTest, OrderServiceTest (16 tests)</td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>DB persistence tests</td><td>UserRepositoryTest @DataJpaTest (5 tests)</td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>API tests (GET, POST, PATCH)</td><td>AuthControllerTest, BookControllerTest @WebMvcTest (12 tests)</td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>Auth + authorization tests</td><td>Register, login, wrong password, 401 for protected routes</td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>Checkout &amp; cancellation business-rule tests</td><td>48-hr cancel, past-deadline reject, stock check, gift points</td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>Frontend not broken</td><td>Next.js runs unchanged on port 3000</td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>GitHub feature branch</td><td><code>feature/cloud-fullstack-spring-boot</code></td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+      <tr><td>README with setup instructions</td><td><code>backend/README.md</code></td><td><span class="badge badge-green">&#10003; Done</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- 9. Quick start -->
+  <h2>9 &middot; Quick Start</h2>
+  <h3>Prerequisites</h3>
+  <p>Java 21 (<code>brew install openjdk@21</code>) &middot; Maven 3.9+ &middot; PostgreSQL running with <code>chapter_and_co</code> database seeded from Front-End capstone.</p>
+
+  <h3>Run the Spring Boot backend</h3>
+<pre>cd chapter-and-co/backend
+export JAVA_HOME=/opt/homebrew/opt/openjdk@21
+mvn spring-boot:run</pre>
+
+  <table>
+    <thead><tr><th>URL</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>http://localhost:8080/swagger-ui.html</code></td><td>Interactive API documentation + try-it-out</td></tr>
+      <tr><td><code>http://localhost:8080/api-docs</code></td><td>OpenAPI JSON spec</td></tr>
+      <tr><td><code>http://localhost:8080/api/v1/books</code></td><td>Books REST endpoint (public)</td></tr>
+      <tr><td><code>http://localhost:3000</code></td><td>Next.js frontend (unchanged)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Demo credentials</h3>
+  <table>
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Email</td><td><code>demo@chapterandco.com</code></td></tr>
+      <tr><td>Password</td><td><code>Demo1234!</code></td></tr>
+    </tbody>
+  </table>
+
+  <!-- 10. GitHub -->
+  <h2>10 &middot; GitHub Delivery</h2>
+  <table>
+    <thead><tr><th>Item</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr><td>Repository</td><td><code>alsacia-dragnea/Applied-AI-Specialist-Experience-Front-End-Reskill-Foundation-</code></td></tr>
+      <tr><td>Cloud FullStack branch</td><td><code>feature/cloud-fullstack-spring-boot</code></td></tr>
+      <tr><td>Front-End branch</td><td><code>feature/chapter-and-co-bookstore</code> (unchanged)</td></tr>
+      <tr><td>Commits</td><td><code>77fce37</code> Spring Boot module &middot; <code>3f31f20</code> video docs</td></tr>
+      <tr><td>backend/README.md</td><td>Setup, test commands, module structure, AI dev log</td></tr>
+      <tr><td>Swagger UI</td><td>Auto-generated at runtime from SpringDoc annotations</td></tr>
+      <tr><td>Video package</td><td>Narration script &middot; SRT captions &middot; Recording guide in <code>docs/video/</code></td></tr>
+    </tbody>
+  </table>
+
+  <!-- 11. Video structure -->
+  <h2>11 &middot; 3-Minute Video Structure</h2>
+  <table>
+    <thead><tr><th>Time</th><th>Scene</th><th>Focus</th></tr></thead>
+    <tbody>
+      <tr><td>0:00&ndash;0:25</td><td>Project intro</td><td>Chapter &amp; Co. Cloud FullStack objective, Java 21 + Spring Boot, IBM Bob</td></tr>
+      <tr><td>0:25&ndash;0:55</td><td>Architecture</td><td>Two-backend design, shared PostgreSQL, <code>ddl-auto=validate</code></td></tr>
+      <tr><td>0:55&ndash;1:20</td><td>IBM Bob prompt</td><td>Show master prompt, generated files in VS Code</td></tr>
+      <tr><td>1:20&ndash;1:40</td><td>Module structure</td><td>VS Code file tree &mdash; entity/, service/, controller/, security/</td></tr>
+      <tr><td>1:40&ndash;2:00</td><td>Swagger UI</td><td>All 16 endpoints, GET /api/v1/books live call</td></tr>
+      <tr><td>2:00&ndash;2:15</td><td>JWT security demo</td><td>Login &rarr; token, protected endpoint with/without token</td></tr>
+      <tr><td>2:15&ndash;2:40</td><td>Test results</td><td>Terminal &mdash; mvn test, 40/40 passing</td></tr>
+      <tr><td>2:40&ndash;3:00</td><td>GitHub branch</td><td>feature/cloud-fullstack-spring-boot, commit, conclusion</td></tr>
+    </tbody>
+  </table>
+
+  <hr/>
+  <p style="font-size:13px;color:#57606a;"><strong>Delivered:</strong> 135 files &middot; Java 21 Spring Boot 3.3.5 &middot; 9 JPA entities &middot; 6 repositories &middot; 5 services &middot; 5 controllers &middot; 16 REST endpoints &middot; Spring Security JWT &middot; Swagger UI &middot; 40 JUnit tests (all passing) &middot; video production package</p>
+  <p style="font-size:13px;color:#57606a;"><strong>Existing frontend:</strong> untouched &middot; Next.js continues to run on port 3000 &middot; PostgreSQL schema unchanged</p>
+  <p style="font-size:13px;color:#57606a;"><strong>Agentic IDE:</strong> IBM Bob &middot; 6 structured prompts with human review after each step.</p>
+
+  <div class="doc-footer">Made with IBM Bob</div>
+</div>
+</body>
+</html>

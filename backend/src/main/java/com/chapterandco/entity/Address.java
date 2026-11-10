@@ -1,11 +1,14 @@
 package com.chapterandco.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.Instant;
 
 @Entity
 @Table(name = "addresses")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Address {
 
@@ -13,14 +16,15 @@ public class Address {
     @Column(length = 36)
     private String id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "userId", nullable = false)
     private String userId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "userId", insertable = false, updatable = false)
     private User user;
 
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "fullName", nullable = false)
     private String fullName;
 
     @Column(nullable = false)
@@ -33,16 +37,16 @@ public class Address {
 
     private String state;
 
-    @Column(name = "postal_code", nullable = false)
+    @Column(name = "postalCode", nullable = false)
     private String postalCode;
 
     @Column(nullable = false)
     private String country = "US";
 
-    @Column(name = "is_default", nullable = false)
+    @Column(name = "isDefault", nullable = false)
     private Boolean isDefault = false;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "createdAt", nullable = false)
     private Instant createdAt;
 
     @PrePersist

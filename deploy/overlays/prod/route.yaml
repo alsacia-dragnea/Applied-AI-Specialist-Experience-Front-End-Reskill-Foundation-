@@ -1,0 +1,14 @@
+# OpenShift (ROSA / ROKS) Route with edge TLS termination. Ignored on vanilla Kubernetes.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: chapter-and-co-backend
+spec:
+  to:
+    kind: Service
+    name: chapter-and-co-backend
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

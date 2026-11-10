@@ -17,8 +17,8 @@ public interface BookRepository extends JpaRepository<Book, String> {
         SELECT DISTINCT b FROM Book b
         LEFT JOIN b.author a
         LEFT JOIN b.categories c
-        WHERE (:search IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', :search, '%'))
-               OR LOWER(a.name) LIKE LOWER(CONCAT('%', :search, '%')))
+        WHERE (CAST(:search AS string) IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+               OR LOWER(a.name) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
           AND (:categorySlug IS NULL OR c.slug = :categorySlug)
         """)
     Page<Book> findWithFilters(

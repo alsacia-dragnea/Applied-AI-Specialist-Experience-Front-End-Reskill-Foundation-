@@ -1,5 +1,7 @@
 package com.chapterandco.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -8,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Order {
 
@@ -18,18 +21,19 @@ public class Order {
     @Column(unique = true, nullable = false)
     private String reference;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "userId", nullable = false)
     private String userId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "userId", insertable = false, updatable = false)
     private User user;
 
-    @Column(name = "address_id")
+    @Column(name = "addressId")
     private String addressId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id", insertable = false, updatable = false)
+    @JoinColumn(name = "addressId", insertable = false, updatable = false)
     private Address address;
 
     @Enumerated(EnumType.STRING)
@@ -39,13 +43,13 @@ public class Order {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal subtotal;
 
-    @Column(name = "shipping_cost", nullable = false, precision = 10, scale = 2)
+    @Column(name = "shippingCost", nullable = false, precision = 10, scale = 2)
     private BigDecimal shippingCost = BigDecimal.ZERO;
 
-    @Column(name = "gift_points_used", nullable = false)
+    @Column(name = "giftPointsUsed", nullable = false)
     private Integer giftPointsUsed = 0;
 
-    @Column(name = "gift_points_discount", nullable = false, precision = 10, scale = 2)
+    @Column(name = "giftPointsDiscount", nullable = false, precision = 10, scale = 2)
     private BigDecimal giftPointsDiscount = BigDecimal.ZERO;
 
     @Column(nullable = false, precision = 10, scale = 2)
@@ -53,10 +57,10 @@ public class Order {
 
     private String notes;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "createdAt", nullable = false)
     private Instant createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updatedAt", nullable = false)
     private Instant updatedAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

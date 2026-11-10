@@ -8,3 +8,7 @@ prisma/dev.db
 coverage/
 playwright-report/
 test-results/
+backend/target/
+.terraform/
+*.tfstate*
+*.tfvars

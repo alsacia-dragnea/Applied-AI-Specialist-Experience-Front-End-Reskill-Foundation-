@@ -1,0 +1,21 @@
+# GitOps: ArgoCD continuously reconciles the cluster with deploy/overlays/<env> in Git.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: chapter-and-co-backend-prod
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/alsacia-dragnea/Applied-AI-Specialist-Experience-Front-End-Reskill-Foundation-.git
+    targetRevision: main
+    path: deploy/overlays/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: chapter-and-co-prod
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
