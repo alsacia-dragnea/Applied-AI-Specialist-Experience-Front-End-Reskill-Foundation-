@@ -61,7 +61,7 @@ jobs:
       security-events: write
     steps:
       - uses: actions/checkout@v4
-      - uses: aquasecurity/trivy-action@0.28.0
+      - uses: aquasecurity/trivy-action@v0.28.0
         with:
           scan-type: fs
           scanners: vuln,secret,misconfig
@@ -86,7 +86,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build image
         run: docker build -t chapter-and-co-backend:scan backend
-      - uses: aquasecurity/trivy-action@0.28.0
+      - uses: aquasecurity/trivy-action@v0.28.0
         with:
           image-ref: chapter-and-co-backend:scan
           severity: CRITICAL
@@ -123,4 +123,5 @@ jobs:
         run: docker compose logs backend
       - name: Stop stack
         if: always()
+        continue-on-error: true
         run: docker compose down -v

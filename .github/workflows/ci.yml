@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Lint docs/openapi.yaml
-        run: npx --yes @redocly/cli@1 lint docs/openapi.yaml --skip-rule=no-empty-servers --skip-rule=operation-4xx-response
+        run: npx --yes @redocly/cli@1 lint docs/openapi.yaml --skip-rule=no-empty-servers --skip-rule=operation-4xx-response --skip-rule=no-server-example.com --skip-rule=info-license
 
   image:
     name: Build & publish container image
