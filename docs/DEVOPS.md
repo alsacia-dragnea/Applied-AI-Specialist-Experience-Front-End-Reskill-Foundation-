@@ -12,6 +12,7 @@ How Chapter & Co. is built, scanned, packaged and deployed. Everything here maps
 | DevSecOps: SCA / secrets / IaC misconfig | Trivy (fs + image), Gitleaks, Dependabot ([`dependabot.yml`](../.github/dependabot.yml)) |
 | GitOps | Kustomize base/overlays in [`deploy/`](../deploy), ArgoCD app in [`deploy/argocd/application.yaml`](../deploy/argocd/application.yaml) |
 | IaC | Terraform in [`deploy/terraform/`](../deploy/terraform) (namespace, secrets, PostgreSQL StatefulSet) |
+| Agentic workflows (agents, skills, mode, contract test, incident playbook) | [`docs/AGENTIC-WORKFLOW.md`](AGENTIC-WORKFLOW.md), [`AGENTS.md`](../AGENTS.md), [`.bob/`](../.bob) |
 | API testing (Insomnia + automated E2E) | [`docs/API-TESTING.md`](API-TESTING.md), [`scripts/api-e2e-test.sh`](../scripts/api-e2e-test.sh) |
 | Observability / incident triage | Spring Actuator probes and metrics, [`scripts/triage-logs.sh`](../scripts/triage-logs.sh) |
 

@@ -24,7 +24,26 @@ jobs:
           java-version: "21"
           cache: maven
       - name: Build and test
-        run: mvn -B verify
+        run: mvn -B verify 2>&1 | tee build.log
+        shell: bash -o pipefail {0}
+      - name: Incident triage summary (on failure)
+        if: failure()
+        working-directory: .
+        run: |
+          {
+            echo "## Build failure triage"
+            echo
+            echo "Pattern summary from \`scripts/triage-logs.sh\`. Classify with \`docs/INCIDENT-PLAYBOOK.md\` or hand this to the \`incident-triager\` agent."
+            echo
+            echo '```'
+            scripts/triage-logs.sh backend/build.log
+            echo '```'
+            echo
+            echo "Failing tests:"
+            echo '```'
+            grep -hE "FAIL|ERROR\]  " backend/build.log | head -20 || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4

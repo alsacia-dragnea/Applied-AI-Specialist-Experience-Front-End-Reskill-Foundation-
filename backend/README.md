@@ -122,7 +122,7 @@ mvn test \
   -Dapp.jwt.expiration-ms=3600000
 ```
 
-### Test results (48 / 48 passing)
+### Test results (50 / 50 passing)
 
 | Suite | Tests | Type |
 |-------|-------|------|
@@ -134,7 +134,8 @@ mvn test \
 | `BookControllerTest` | 6 | API (`@WebMvcTest` + MockMvc) |
 | `ChapterAndCoApplicationTests` | 1 | Spring context load |
 | `CheckoutIntegrationTest` | 6 | Real persistence (H2, real entities): checkout, cancel, buy-again, related, author filter |
-| **Total** | **48** | **All passing** |
+| `OpenApiContractTest` | 2 | `docs/openapi.yaml` must match the operations the application serves |
+| **Total** | **50** | **All passing** |
 
 ---
 
@@ -233,10 +234,14 @@ The Spring Boot module connects to the **same PostgreSQL database** as the Next.
 
 **Prompt:** "Create a Spring Boot backend module that reuses the existing PostgreSQL schema from the Next.js frontend capstone. Implement REST APIs for books, categories, auth, cart/checkout, orders, cancellation, gift points and recommendations. Add Spring Security with JWT, SpringDoc Swagger UI, and JUnit + Mockito tests."
 
-**Generated:** Full Maven project (pom.xml), 9 JPA entities, 6 repositories, 5 services, 5 controllers, 2 security classes, 2 config classes, 3 exception classes, 5 DTOs, 9 test classes — 48 tests, all passing.
+**Generated:** Full Maven project (pom.xml), 9 JPA entities, 6 repositories, 5 services, 5 controllers, 2 security classes, 2 config classes, 3 exception classes, 5 DTOs, 10 test classes — 50 tests, all passing.
 
 **Human review:** Confirmed table name mappings match Prisma schema. Added `ddl-auto=validate` to protect existing data. Fixed `@WebMvcTest` security context for controller tests. Added `@MockBean JwtTokenProvider` and `UserRepository` to controller test slices.
 
 ## API testing
 
 Insomnia collection, automated end-to-end script (57 checks on real PostgreSQL) and the latest results: see [`docs/API-TESTING.md`](../docs/API-TESTING.md).
+
+## Agentic workflows
+
+Agents, skills, custom mode, contract test and incident playbook: see [`docs/AGENTIC-WORKFLOW.md`](../docs/AGENTIC-WORKFLOW.md).

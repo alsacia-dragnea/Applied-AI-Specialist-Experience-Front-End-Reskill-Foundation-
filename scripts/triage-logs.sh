@@ -20,7 +20,7 @@ grep -oE '\b(ERROR|WARN|INFO|DEBUG)\b' "$tmp" | sort | uniq -c | sort -rn || tru
 
 echo
 echo "== Top exceptions =="
-grep -oE '([a-zA-Z_]+\.)+[A-Z][A-Za-z]*(Exception|Error)' "$tmp" | sort | uniq -c | sort -rn | head -10 || true
+grep -oE '([a-zA-Z_]+\.)+[A-Z][A-Za-z]*(Exception|Error)([^A-Za-z]|$)' "$tmp" | sed -E 's/[^A-Za-z]$//' | sort | uniq -c | sort -rn | head -10 || true
 
 echo
 echo "== Most frequent ERROR/WARN messages =="
@@ -29,9 +29,10 @@ grep -E '\b(ERROR|WARN)\b' "$tmp" | sed -E 's/^[0-9T:.+-]+ +//' | cut -c1-160 | 
 echo
 echo "== First stack trace per exception type =="
 awk '
-  /([a-zA-Z_]+\.)+[A-Z][A-Za-z]*(Exception|Error)/ {
-    match($0, /([a-zA-Z_]+\.)+[A-Z][A-Za-z]*(Exception|Error)/)
+  /([a-zA-Z_]+\.)+[A-Z][A-Za-z]*(Exception|Error)([^A-Za-z]|$)/ {
+    match($0, /([a-zA-Z_]+\.)+[A-Z][A-Za-z]*(Exception|Error)([^A-Za-z]|$)/)
     key = substr($0, RSTART, RLENGTH)
+    sub(/[^A-Za-z]$/, "", key)
     if (!(key in seen)) { seen[key] = 1; show = 6; print "--- " key } else { show = 0 }
   }
   show > 0 { print; show-- }
