@@ -1,0 +1,65 @@
+== Starting stack
+== Seeding catalogue (prisma/seed.ts)
+books seeded: 30
+== Running API tests
+PASS Readiness probe                                      want=200 got=200 
+PASS Register user                                        want=201 got=201 
+PASS Register duplicate email rejected                    want=400 got=400 
+PASS Register with invalid data rejected                  want=422 got=422 
+PASS Login with wrong password rejected                   want=400 got=400 
+PASS Login                                                want=200 got=200 
+PASS List categories                                      want=200 got=200 10 categories
+PASS Category by slug                                     want=200 got=200 
+PASS Unknown category                                     want=404 got=404 
+PASS List books (paged)                                   want=200 got=200 30 total
+PASS Filter books by category                             want=200 got=200 6 books
+PASS Search books                                         want=200 got=200 
+PASS Sort books by price                                  want=200 got=200 
+PASS Featured books                                       want=200 got=200 
+PASS Bestseller books                                     want=200 got=200 
+PASS List authors (brands)                                want=200 got=200 15 authors
+PASS Filter books by author                               want=200 got=200 3 books
+PASS Book detail                                          want=200 got=200 
+PASS Book detail has estimated delivery date              {"to":"2026-11-15","from":"2026-11-13"}
+PASS Unknown book                                         want=404 got=404 
+PASS Related books                                        want=200 got=200 4 books
+PASS Related books exclude the book itself                
+PASS Orders without token rejected                        want=401 got=401 
+PASS Checkout without token rejected                      want=401 got=401 
+PASS Recommendations (no history -> featured)             want=200 got=200 reason=personalized
+PASS Create address                                       want=201 got=201 
+PASS Create invalid address rejected                      want=422 got=422 
+PASS List addresses                                       want=200 got=200 
+PASS Gift points balance (new user)                       want=200 got=200 balance=0
+PASS Checkout with card                                   want=201 got=201 ref=921CE3113A23
+PASS Stock decremented by checkout                        stock 70 -> 68
+PASS Checkout with invalid payment method rejected        want=400 got=400 
+PASS Checkout with invalid quantity rejected              want=422 got=422 
+PASS Checkout with unknown book rejected                  want=404 got=404 
+PASS Redeem more gift points than owned rejected          want=400 got=400 
+PASS Checkout redeeming gift points                       want=201 got=201 redeemed 5 pts
+PASS Order history                                        want=200 got=200 2 orders
+PASS Order detail                                         want=200 got=200 
+PASS Order detail contains items and payment              
+PASS Unknown order                                        want=404 got=404 
+PASS Buy again                                            want=200 got=200 2 books
+PASS Recommendations (with history)                       want=200 got=200 reason=personalized
+PASS Another user cannot read my order (IDOR)             want=404 got=404 
+PASS Another user cannot cancel my order (IDOR)           want=404 got=404 
+PASS Cancel with invalid action rejected                  want=400 got=400 
+PASS Cancel order within 48h                              want=200 got=200 
+PASS Cancel an already cancelled order rejected           want=400 got=400 
+PASS Cancel order older than 48h rejected                 want=400 got=400 Orders can only be cancelled within 48 hours of purchase
+== Verifying data in PostgreSQL
+PASS User row saved                                       email=e2e-1794315470@example.com
+PASS Both orders saved                                    orders=2
+PASS Order items saved                                    order_items=2
+PASS Payments saved                                       payments=2
+PASS Cancelled order status stored                        status=CANCELLED
+PASS Stock restored after cancellation                    stock back to seeded value 70
+PASS Gift points earned and stored                        EARNED rows >= 1
+PASS Gift points redeemed and stored                      REDEEMED rows = 1
+PASS No unhandled exceptions in backend log               0 occurrences
+
+RESULT: 57/57 passed, 0 failed
+report written to /tmp/api-test-results.md
