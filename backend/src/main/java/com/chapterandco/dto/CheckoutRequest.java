@@ -1,5 +1,6 @@
 package com.chapterandco.dto;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Min;
@@ -12,7 +13,7 @@ public record CheckoutRequest(
     @NotBlank String paymentMethod,
     String cardLast4,
     @Min(0) int giftPointsToRedeem,
-    @NotNull @Size(min = 1) List<CheckoutItem> items
+    @NotNull @Size(min = 1) List<@Valid CheckoutItem> items
 ) {
     public record CheckoutItem(
         @NotBlank String bookId,

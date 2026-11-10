@@ -117,6 +117,15 @@ class CheckoutIntegrationTest {
     }
 
     @Test
+    @DisplayName("checkout item quantity is validated (1..10) through the list")
+    void checkoutItemQuantityIsValidated() {
+        var validator = jakarta.validation.Validation.buildDefaultValidatorFactory().getValidator();
+        assertThat(validator.validate(request("b1", 999, 0))).isNotEmpty();
+        assertThat(validator.validate(request("b1", 0, 0))).isNotEmpty();
+        assertThat(validator.validate(request("b1", 10, 0))).isEmpty();
+    }
+
+    @Test
     @DisplayName("related books share the category and exclude the book itself")
     void related_excludesSelf() {
         assertThat(bookService.findRelated("book-one"))

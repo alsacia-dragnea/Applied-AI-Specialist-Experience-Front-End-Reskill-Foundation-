@@ -1,0 +1,498 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_source": "chapter-and-co",
+  "resources": [
+    {
+      "_id": "wrk_1",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "Chapter & Co. API",
+      "description": "Generated from docs/openapi.yaml. Run 'Auth / Login' first: it stores the JWT in the environment.",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_2",
+      "_type": "environment",
+      "parentId": "wrk_1",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8080/api/v1",
+        "token": "",
+        "book_slug": "",
+        "book_id": "",
+        "address_id": "",
+        "order_id": "",
+        "author_id": "",
+        "category_slug": ""
+      }
+    },
+    {
+      "_id": "fld_4",
+      "_type": "request_group",
+      "parentId": "wrk_1",
+      "name": "1. Auth"
+    },
+    {
+      "_id": "req_5",
+      "_type": "request",
+      "parentId": "fld_4",
+      "name": "Register",
+      "description": "201 -> {token, user}",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/register",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"Passw0rd!x\"\n}"
+      }
+    },
+    {
+      "_id": "req_6",
+      "_type": "request",
+      "parentId": "fld_4",
+      "name": "Login (stores token)",
+      "description": "200 -> {token}. Copy the token into the 'token' environment variable.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"Passw0rd!x\"\n}"
+      }
+    },
+    {
+      "_id": "fld_7",
+      "_type": "request_group",
+      "parentId": "wrk_1",
+      "name": "2. Catalogue (public)"
+    },
+    {
+      "_id": "req_8",
+      "_type": "request",
+      "parentId": "fld_7",
+      "name": "List categories",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/categories",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "req_9",
+      "_type": "request",
+      "parentId": "fld_7",
+      "name": "Category by slug",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/categories/{{ _.category_slug }}",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "req_10",
+      "_type": "request",
+      "parentId": "fld_7",
+      "name": "List books",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/books?page=1&limit=12&sort=newest",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "req_11",
+      "_type": "request",
+      "parentId": "fld_7",
+      "name": "Filter by category",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/books?category={{ _.category_slug }}",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "req_12",
+      "_type": "request",
+      "parentId": "fld_7",
+      "name": "Filter by author (brand)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/books?author={{ _.author_id }}",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "req_13",
+      "_type": "request",
+      "parentId": "fld_7",
+      "name": "Search books",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/books?search=the",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "req_14",
+      "_type": "request",
+      "parentId": "fld_7",
+      "name": "Featured books",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/books/featured",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "req_15",
+      "_type": "request",
+      "parentId": "fld_7",
+      "name": "Bestsellers",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/books/bestsellers",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "req_16",
+      "_type": "request",
+      "parentId": "fld_7",
+      "name": "List authors (brands)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/authors",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "req_17",
+      "_type": "request",
+      "parentId": "fld_7",
+      "name": "Book detail (+ estimated delivery)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/books/{{ _.book_slug }}",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "req_18",
+      "_type": "request",
+      "parentId": "fld_7",
+      "name": "Related books",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/books/{{ _.book_slug }}/related",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "fld_19",
+      "_type": "request_group",
+      "parentId": "wrk_1",
+      "name": "3. Account & addresses"
+    },
+    {
+      "_id": "req_20",
+      "_type": "request",
+      "parentId": "fld_19",
+      "name": "List addresses",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/addresses",
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_21",
+      "_type": "request",
+      "parentId": "fld_19",
+      "name": "Create address",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/addresses",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"fullName\": \"Test User\",\n  \"line1\": \"1 Test Street\",\n  \"city\": \"London\",\n  \"postalCode\": \"SW1A 1AA\",\n  \"country\": \"GB\",\n  \"isDefault\": true\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_22",
+      "_type": "request",
+      "parentId": "fld_19",
+      "name": "Gift points balance",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/gift-points",
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_23",
+      "_type": "request",
+      "parentId": "fld_19",
+      "name": "Recommendations",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/recommendations",
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "fld_24",
+      "_type": "request_group",
+      "parentId": "wrk_1",
+      "name": "4. Checkout & orders"
+    },
+    {
+      "_id": "req_25",
+      "_type": "request",
+      "parentId": "fld_24",
+      "name": "Checkout - card",
+      "description": "201 -> {orderId, reference}",
+      "method": "POST",
+      "url": "{{ _.base_url }}/checkout",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"addressId\": \"{{ _.address_id }}\",\n  \"paymentMethod\": \"DEMO_CARD\",\n  \"cardLast4\": \"4242\",\n  \"giftPointsToRedeem\": 0,\n  \"items\": [\n    {\n      \"bookId\": \"{{ _.book_id }}\",\n      \"quantity\": 1\n    }\n  ]\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_26",
+      "_type": "request",
+      "parentId": "fld_24",
+      "name": "Checkout - redeem gift points",
+      "description": "100 points = 1 GBP",
+      "method": "POST",
+      "url": "{{ _.base_url }}/checkout",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"addressId\": \"{{ _.address_id }}\",\n  \"paymentMethod\": \"GIFT_POINTS\",\n  \"giftPointsToRedeem\": 5,\n  \"items\": [\n    {\n      \"bookId\": \"{{ _.book_id }}\",\n      \"quantity\": 1\n    }\n  ]\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_27",
+      "_type": "request",
+      "parentId": "fld_24",
+      "name": "Order history",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/orders",
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_28",
+      "_type": "request",
+      "parentId": "fld_24",
+      "name": "Buy again",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/orders/buy-again",
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_29",
+      "_type": "request",
+      "parentId": "fld_24",
+      "name": "Order detail",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/orders/{{ _.order_id }}",
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_30",
+      "_type": "request",
+      "parentId": "fld_24",
+      "name": "Cancel order (within 48h)",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/orders/{{ _.order_id }}",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"action\": \"cancel\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "fld_31",
+      "_type": "request_group",
+      "parentId": "wrk_1",
+      "name": "5. Negative cases"
+    },
+    {
+      "_id": "req_32",
+      "_type": "request",
+      "parentId": "fld_31",
+      "name": "Orders without token -> 401",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/orders",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "req_33",
+      "_type": "request",
+      "parentId": "fld_31",
+      "name": "Unknown book -> 404",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/books/does-not-exist",
+      "headers": [],
+      "parameters": []
+    },
+    {
+      "_id": "req_34",
+      "_type": "request",
+      "parentId": "fld_31",
+      "name": "Register invalid data -> 422",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/register",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"A\",\n  \"email\": \"bad\",\n  \"password\": \"short\"\n}"
+      }
+    },
+    {
+      "_id": "req_35",
+      "_type": "request",
+      "parentId": "fld_31",
+      "name": "Checkout invalid payment method -> 400",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/checkout",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"addressId\": \"{{ _.address_id }}\",\n  \"paymentMethod\": \"CREDIT_CARD\",\n  \"giftPointsToRedeem\": 0,\n  \"items\": [\n    {\n      \"bookId\": \"{{ _.book_id }}\",\n      \"quantity\": 1\n    }\n  ]\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_36",
+      "_type": "request",
+      "parentId": "fld_31",
+      "name": "Checkout quantity 999 -> 422",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/checkout",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"addressId\": \"{{ _.address_id }}\",\n  \"paymentMethod\": \"DEMO_CARD\",\n  \"giftPointsToRedeem\": 0,\n  \"items\": [\n    {\n      \"bookId\": \"{{ _.book_id }}\",\n      \"quantity\": 999\n    }\n  ]\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    }
+  ]
+}
